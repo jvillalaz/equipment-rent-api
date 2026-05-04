@@ -86,7 +86,7 @@ async def simulate_command_behavior(equipment_id: UUID, command_type: CommandTyp
 
 def publish_status(equipment_id: UUID, status: EquipmentStatusEnum):
     topic = f"equipments/{equipment_id}/status"
-    payload = json.dumps({"status": status})
+    payload = json.dumps({"status": status.value})
     mqtt.publish(topic, payload)
 
 
