@@ -171,6 +171,7 @@ class EquipmentPersistence(IEquipmentService):
             equipment.last_heartbeat = equipment_data.last_heartbeat
 
         await equipment.save()
+        await equipment.fetch_related("current_status")
 
         return EquipmentResponseSchema(
             id=equipment.id,
