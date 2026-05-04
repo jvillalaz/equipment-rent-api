@@ -162,6 +162,9 @@ class EquipmentPersistence(IEquipmentService):
 
         equipment = await Equipment.get_or_none(id=equipment_id).select_related('current_status')
 
+        if not equipment:
+            return None
+
         if equipment_data.name and equipment_data.name != equipment.name:
             existing = await Equipment.get_or_none(name=equipment_data.name)
             if existing and existing.id != equipment.id:
@@ -197,6 +200,10 @@ class EquipmentPersistence(IEquipmentService):
     ) -> None:
 
         equipment = await Equipment.get_or_none(id=equipment_id)
+
+        if not equipment:
+            return None
+
         return await equipment.delete()
 
     @classmethod
