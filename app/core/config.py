@@ -31,7 +31,7 @@ async def connect_mqtt(retries=5, delay=2):
 
 # Initializes the Postgres database with retry logic
 async def init_db(app: FastAPI, retries=10, delay=3):
-    db_url = "postgres://rentdb:rentdb@rent-postgres:5432/rent"
+    db_url = os.getenv("DATABASE_URL", "postgres://rentdb:rentdb@rent-postgres:5432/rent")
     for attempt in range(retries):
         try:
             await Tortoise.init(
@@ -48,7 +48,7 @@ async def init_db(app: FastAPI, retries=10, delay=3):
 
 
 # Secret key and algorithm used to sign JWT tokens
-SECRET_KEY = "ffc2c1bf196a3a3ebbfcf731f4b03fe57239c2e81be50bd23a36e472ef3913b2"
+SECRET_KEY = os.getenv("SECRET_KEY", "ffc2c1bf196a3a3ebbfcf731f4b03fe57239c2e81be50bd23a36e472ef3913b2")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
