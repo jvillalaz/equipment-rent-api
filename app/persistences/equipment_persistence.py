@@ -86,7 +86,10 @@ class EquipmentPersistence(IEquipmentService):
         """
         Retrieves an equipment status by its status_id.
         """
-        status_exists = await EquipmentStatus.get_or_none(id=status_id).select_related('current_status')
+        status_exists = await EquipmentStatus.get_or_none(id=status_id)
+
+        if not status_exists:
+            return None
 
         status_response = EquipmentStatusResponseSchema(
             id=status_exists.id,
@@ -131,6 +134,8 @@ class EquipmentPersistence(IEquipmentService):
             current_status_id=equipment_data.current_status_id,
             location=equipment_data.location,
         )
+
+        await equipment.fetch_related("current_status")
 
         return EquipmentResponseSchema(
             id=equipment.id,
