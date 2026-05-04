@@ -51,12 +51,12 @@ class ReservationService(Service):
         user_data = await cls.user_repository.get_specific_user(reservation_data.user_id)
 
         if not user_data:
-            raise NotFoundException(detail=f"User with id '{user_data.id}' not found")
+            raise NotFoundException(detail=f"User with id '{reservation_data.user_id}' not found")
 
         equipment_data = await cls.equipment_repository.get_specific_equipment(reservation_data.equipment_id)
 
         if not equipment_data:
-            raise NotFoundException(detail=f"Equipment with id '{equipment_data.equipment_id}' not found")
+            raise NotFoundException(detail=f"Equipment with id '{reservation_data.equipment_id}' not found")
 
         return await cls.reservation_repository.post_reservation(reservation_data)
 
