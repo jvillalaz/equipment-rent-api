@@ -32,8 +32,8 @@ class IAuthService(ABC):
     @abstractmethod
     async def login_user(
             cls,
-            credentials: Optional[LoginSchema],
-    ) -> str:
+            credentials: LoginSchema,
+    ) -> Optional[str]:
         """
         Authenticates the user and returns a JWT access token.
         """
@@ -44,7 +44,7 @@ class IAuthService(ABC):
     async def get_current_active_user(
             cls,
             token: str
-    ) -> UserResponseSchema:
+    ) -> Optional[UserResponseSchema]:
         """
         Extracts the user from the JWT token and ensures they are active.
         """
