@@ -14,7 +14,7 @@ class CommandPersistence(ICommandService):
     """
     @classmethod
     async def get_command_types(cls) -> list[CommandTypeResponseSchema]:
-        """R
+        """
         Retrieves all available command types.
         """
         command_types = await CommandType.all()
