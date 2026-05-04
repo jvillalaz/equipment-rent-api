@@ -43,6 +43,9 @@ class ReservationPersistence(IReservationService):
         # Set reservation status to default "Active"
         reservation_status = await ReservationStatus.get_or_none(name="Active")
 
+        if not reservation_status:
+            raise ValueError("Reservation status 'Active' not found. Run seeds first.")
+
         # Create reservation record
         reservation = await Reservation.create(
             user_id=reservation_data.user_id,
@@ -144,6 +147,10 @@ class ReservationPersistence(IReservationService):
         Updates the status of a specific reservation identified by its UUID.
         """
         reservation = await Reservation.get_or_none(id=reservation_id).prefetch_related("user", "equipment", "status")
+
+        if not reservation:
+            return None
+
         reservation.status_id = reservation_data.status_id
         await reservation.save(update_fields=["status_id"])
         await reservation.fetch_related("status")
@@ -170,6 +177,10 @@ class ReservationPersistence(IReservationService):
         Cancels the specified reservation by setting its status to "Canceled".
         """
         reservation = await Reservation.get_or_none(id=reservation_id)
+
+        if not reservation:
+            return None
+
         canceled_status = await ReservationStatus.get_or_none(name="Canceled")
 
         if not canceled_status:

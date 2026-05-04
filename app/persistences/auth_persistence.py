@@ -104,7 +104,7 @@ class AuthPersistence(IAuthService):
             return None
 
         user_response = UserResponseSchema(
-            id=user_auth.id,
+            id=user_auth.user.id,
             name=user_auth.user.name,
             username=user_auth.username,
             email=user_auth.user.email,

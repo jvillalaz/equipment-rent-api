@@ -76,6 +76,9 @@ class UserPersistence(IUserService):
         # Fetch the user and their linked profile
         user_auth = await UserAuth.get_or_none(user_id=user_id).prefetch_related("user")
 
+        if not user_auth:
+            return None
+
         # Update profile fields only if new values were provided
         if user_data.name is not None:
             user_auth.user.name = user_data.name
@@ -112,6 +115,9 @@ class UserPersistence(IUserService):
         """
         # Load the user’s authentication and profile info
         user_auth = await UserAuth.get_or_none(user_id=user_id).prefetch_related("user")
+
+        if not user_auth:
+            return None
 
         # Mark user as inactive
         user_auth.user.is_active = False
