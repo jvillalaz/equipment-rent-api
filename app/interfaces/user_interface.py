@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Optional
 from uuid import UUID
 
 from app.schemas.user_auth_schemas import UserResponseSchema, UserUpdateSchema
@@ -24,7 +23,7 @@ class IUserService(ABC):
     async def get_specific_user(
             cls,
             user_id: UUID
-    ) -> Optional[UserResponseSchema]:
+    ) -> UserResponseSchema | None:
         """
         Retrieves a specific user by their ID, including authentication and profile details.
         """
@@ -36,7 +35,7 @@ class IUserService(ABC):
             cls,
             user_id: UUID,
             user_data: UserUpdateSchema
-    ) -> Optional[UserResponseSchema]:
+    ) -> UserResponseSchema | None:
         """
         Updates user information such as name, username and email.
         """

@@ -1,5 +1,4 @@
 from datetime import timedelta, datetime, timezone
-from typing import Optional
 
 import jwt
 from jwt import ExpiredSignatureError, InvalidTokenError, decode
@@ -25,7 +24,7 @@ class AuthPersistence(IAuthService):
     async def post_user(
             cls,
             user_info: UserRequestSchema
-    ) -> Optional[UserResponseSchema]:
+    ) -> UserResponseSchema | None:
         """
         Registers a new user with the given credentials.
         """
@@ -61,7 +60,7 @@ class AuthPersistence(IAuthService):
     async def login_user(
             cls,
             credentials: LoginSchema
-    ) -> Optional[str]:
+    ) -> str | None:
         """
         Authenticates the user and returns a JWT access token.
         """
@@ -83,7 +82,7 @@ class AuthPersistence(IAuthService):
     async def get_current_active_user(
             cls,
             token: str
-    ) -> Optional[UserResponseSchema]:
+    ) -> UserResponseSchema | None:
         """
         Extracts the user from the JWT token and ensures they are active.
         """

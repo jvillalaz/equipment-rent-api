@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from tortoise import fields
 from tortoise.models import Model

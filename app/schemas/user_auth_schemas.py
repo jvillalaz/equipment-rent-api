@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 from pydantic import EmailStr, Field
 from tools.application import DTO
@@ -27,10 +26,10 @@ class UserUpdateSchema(DTO):
     """
     Schema for updating user profile information.
     """
-    name: Optional[str] = Field(None, description="Name of the user")
-    username: Optional[str] = Field(None, description="Username used for login")
-    email: Optional[EmailStr] = Field(None, description="User's email address")
-    is_active: Optional[bool] = Field(None, description="Indicates whether the user is active")
+    name: str | None = Field(None, description="Name of the user")
+    username: str | None = Field(None, description="Username used for login")
+    email: EmailStr | None = Field(None, description="User's email address")
+    is_active: bool | None = Field(None, description="Indicates whether the user is active")
 
 class TokenSchema(DTO):
     """
@@ -43,7 +42,7 @@ class TokenDataSchema(DTO):
     """
     Schema representing the decoded information from the JWT token payload.
     """
-    username: Optional[str] = Field(None, description="Username extracted from the token payload")
+    username: str | None = Field(None, description="Username extracted from the token payload")
 
 class LoginSchema(DTO):
     """

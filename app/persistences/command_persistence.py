@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from app.database import CommandType, Command
@@ -99,7 +98,7 @@ class CommandPersistence(ICommandService):
     async def get_specific_command(
             cls,
             command_id: UUID,
-    ) -> Optional[CommandResponseSchema]:
+    ) -> CommandResponseSchema | None:
         cmd = await Command.get_or_none(id=command_id).prefetch_related("command_type", "equipment")
 
         if not cmd:

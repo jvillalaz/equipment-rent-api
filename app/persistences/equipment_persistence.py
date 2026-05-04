@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from app.database import Equipment, EquipmentStatusLog
@@ -58,7 +57,7 @@ class EquipmentPersistence(IEquipmentService):
     async def get_specific_equipment(
             cls,
             equipment_id: UUID
-    ) -> Optional[EquipmentResponseSchema]:
+    ) -> EquipmentResponseSchema | None:
         """
         Retrieves specific equipment by its ID.
         """
@@ -82,7 +81,7 @@ class EquipmentPersistence(IEquipmentService):
     async def get_equipment_status_by_id(
             cls,
             status_id: UUID
-    ) -> Optional[EquipmentStatusResponseSchema]:
+    ) -> EquipmentStatusResponseSchema | None:
         """
         Retrieves an equipment status by its status_id.
         """
@@ -103,7 +102,7 @@ class EquipmentPersistence(IEquipmentService):
     async def get_equipment_by_name(
             cls,
             equipment_name: str,
-    ) -> Optional[EquipmentResponseSchema]:
+    ) -> EquipmentResponseSchema | None:
         """
         Retrieves equipment by its name.
         """
@@ -151,7 +150,7 @@ class EquipmentPersistence(IEquipmentService):
             cls,
             equipment_id: UUID,
             equipment_data: EquipmentUpdateSchema,
-    ) -> Optional[EquipmentResponseSchema]:
+    ) -> EquipmentResponseSchema | None:
 
         equipment = await Equipment.get_or_none(id=equipment_id).select_related('current_status')
 
@@ -194,7 +193,7 @@ class EquipmentPersistence(IEquipmentService):
     @classmethod
     async def _fetch_and_map_status_logs(
             cls,
-            equipment_id: Optional[UUID] = None
+            equipment_id: UUID | None = None
     ) -> list[EquipmentStatusLogResponseSchema]:
         """
         Internal helper to fetch and map equipment status logs,

@@ -1,6 +1,5 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 from uuid import UUID
 
 from pydantic import Field
@@ -48,7 +47,7 @@ class CommandPayloadSchema(DTO):
     Model representing the payload for commands.
     """
     command_type: CommandTypeEnum = Field(..., description="Name of the command type")
-    payload: Optional[str] = Field(None, description="Command payload as a string")
+    payload: str | None = Field(None, description="Command payload as a string")
 
 
 class CommandRequestSchema(DTO):
@@ -57,7 +56,7 @@ class CommandRequestSchema(DTO):
     """
     equipment_id: UUID = Field(..., description="Unique identifier of the equipment that received the command")
     command_type_id: UUID = Field(..., description="Unique identifier of the command type")
-    payload: Optional[str] = Field(None, description="Optional command payload sent to the equipment")
+    payload: str | None = Field(None, description="Optional command payload sent to the equipment")
 
 
 class CommandResponseSchema(DTO):
@@ -69,5 +68,5 @@ class CommandResponseSchema(DTO):
     equipment_name: str = Field(..., description="Name of the equipment that received the command")
     command_type_id: UUID = Field(..., description="Unique identifier of the command type")
     command_name: str = Field(..., description="Name of the command solicitation")
-    payload: Optional[str] = Field(None, description="Optional command payload sent to the equipment")
+    payload: str | None = Field(None, description="Optional command payload sent to the equipment")
     created_at: datetime = Field(..., description="Timestamp of command solicitation creation")

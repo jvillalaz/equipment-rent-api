@@ -1,6 +1,5 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 from uuid import UUID
 from pydantic import Field
 
@@ -37,8 +36,8 @@ class EquipmentRequestSchema(DTO):
     """
     name: str = Field(..., description="Name of the equipment")
     current_status_id: UUID = Field(..., description="ID of the current equipment status")
-    location: Optional[UUID] = Field(None, description="Location identifier of the equipment")
-    last_heartbeat: Optional[datetime] = Field(None, description="Timestamp of the last received heartbeat")
+    location: UUID | None = Field(None, description="Location identifier of the equipment")
+    last_heartbeat: datetime | None = Field(None, description="Timestamp of the last received heartbeat")
 
 class EquipmentResponseSchema(DTO):
     """
@@ -47,8 +46,8 @@ class EquipmentResponseSchema(DTO):
     id: UUID = Field(..., description="Unique identifier for the equipment")
     name: str = Field(..., description="Name of the equipment")
     current_status_name: EquipmentStatusEnum = Field(..., description="Name of the current equipment status")
-    location: Optional[UUID] = Field(None, description="Location identifier of the equipment")
-    last_heartbeat: Optional[datetime] = Field(None, description="Last known heartbeat from the equipment")
+    location: UUID | None = Field(None, description="Location identifier of the equipment")
+    last_heartbeat: datetime | None = Field(None, description="Last known heartbeat from the equipment")
     created_at: datetime = Field(..., description="Timestamp of equipment creation")
 
 
@@ -56,7 +55,7 @@ class EquipmentUpdateSchema(DTO):
     """
     Request schema for creating a new equipment.
     """
-    name: Optional[str] = Field(..., description="Name of the equipment")
-    current_status_id: Optional[UUID] = Field(..., description="ID of the current equipment status")
-    location: Optional[UUID] = Field(None, description="Location identifier of the equipment")
-    last_heartbeat: Optional[datetime] = Field(None, description="Timestamp of the last received heartbeat")
+    name: str | None = Field(..., description="Name of the equipment")
+    current_status_id: UUID | None = Field(..., description="ID of the current equipment status")
+    location: UUID | None = Field(None, description="Location identifier of the equipment")
+    last_heartbeat: datetime | None = Field(None, description="Timestamp of the last received heartbeat")

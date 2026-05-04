@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Optional
 from uuid import UUID
 
 from app.schemas.reservation_schemas import ReservationStatusResponseSchema, ReservationRequestSchema, \
@@ -42,7 +41,7 @@ class IReservationService(ABC):
     async def get_specific_reservation(
             cls,
             reservation_id: UUID,
-    ) -> Optional[ReservationResponseSchema]:
+    ) -> ReservationResponseSchema | None:
         """
         Retrieves a specific reservation by its ID.
         """
@@ -53,7 +52,7 @@ class IReservationService(ABC):
     async def get_specific_reservation_status(
             cls,
             status_id: UUID,
-    ) -> Optional[ReservationStatusResponseSchema]:
+    ) -> ReservationStatusResponseSchema | None:
         """
         Retrieves a reservation status by its status_id.
         """

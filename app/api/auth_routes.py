@@ -47,8 +47,8 @@ async def login_user(
     :param credentials: OAuth2PasswordRequestForm containing username and password.
     :return: TokenSchema object with access token and token type.
     """
-    credentials = LoginSchema(username=credentials.username, password=credentials.password)
-    return await AuthService.login_user(credentials)
+    login_data = LoginSchema(username=credentials.username, password=credentials.password)
+    return await AuthService.login_user(login_data)
 
 
 @auth_router.get(

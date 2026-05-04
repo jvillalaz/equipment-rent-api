@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Optional
 from uuid import UUID
 
 from app.schemas.equipment_schemas import EquipmentResponseSchema, EquipmentStatusResponseSchema, \
@@ -32,7 +31,7 @@ class IEquipmentService(ABC):
     async def get_specific_equipment(
             cls,
             equipment_id: UUID
-    ) -> Optional[EquipmentResponseSchema]:
+    ) -> EquipmentResponseSchema | None:
         """
         Retrieves specific equipment by its ID.
         """
@@ -55,7 +54,7 @@ class IEquipmentService(ABC):
             cls,
             equipment_id: UUID,
             equipment_data: EquipmentUpdateSchema,
-    ) -> Optional[EquipmentResponseSchema]:
+    ) -> EquipmentResponseSchema | None:
         """
         Updates equipment information.
         """
@@ -66,7 +65,7 @@ class IEquipmentService(ABC):
     async def get_equipment_status_by_id(
             cls,
             status_id: UUID,
-    ) -> Optional[EquipmentStatusResponseSchema]:
+    ) -> EquipmentStatusResponseSchema | None:
         """
         Retrieves an equipment status by its status_id.
         """
@@ -77,7 +76,7 @@ class IEquipmentService(ABC):
     async def get_equipment_by_name(
             cls,
             equipment_name: str,
-    ) -> Optional[EquipmentResponseSchema]:
+    ) -> EquipmentResponseSchema | None:
         """
         Retrieves equipment by its name.
         """

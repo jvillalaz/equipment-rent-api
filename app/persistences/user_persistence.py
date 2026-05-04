@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from app.database import UserAuth
@@ -39,7 +38,7 @@ class UserPersistence(IUserService):
     async def get_specific_user(
             cls,
             user_id: UUID
-    ) -> Optional[UserResponseSchema]:
+    ) -> UserResponseSchema | None:
         """
         Retrieves a specific user by their ID, including authentication and profile details.
         """
@@ -65,7 +64,7 @@ class UserPersistence(IUserService):
             cls,
             user_id: UUID,
             user_data: UserUpdateSchema
-    ) -> Optional[UserResponseSchema]:
+    ) -> UserResponseSchema | None:
         """
         Updates user information such as name, username and email.
         """

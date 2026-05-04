@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Optional
 from uuid import UUID
 
 from app.schemas.command_schemas import CommandRequestSchema, CommandResponseSchema, CommandTypeResponseSchema
@@ -42,7 +41,7 @@ class ICommandService(ABC):
     async def get_specific_command(
             cls,
             command_id: UUID,
-    ) -> Optional[CommandResponseSchema]:
+    ) -> CommandResponseSchema | None:
         """
         Retrieves a specific command that have been executed in the system.
         """

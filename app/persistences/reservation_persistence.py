@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from app.interfaces.reservation_interface import IReservationService
@@ -88,7 +87,7 @@ class ReservationPersistence(IReservationService):
     async def get_specific_reservation(
             cls,
             reservation_id: UUID,
-    ) -> Optional[ReservationResponseSchema]:
+    ) -> ReservationResponseSchema | None:
         """
         Retrieves a specific reservation by its ID.
         """
@@ -111,7 +110,7 @@ class ReservationPersistence(IReservationService):
     async def get_specific_reservation_status(
             cls,
             status_id: UUID,
-    ) -> Optional[ReservationStatusResponseSchema]:
+    ) -> ReservationStatusResponseSchema | None:
         """
         Retrieves a reservation status by its status_id.
         """
