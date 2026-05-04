@@ -48,7 +48,7 @@ class AuthPersistence(IAuthService):
         )
 
         user_response = UserResponseSchema(
-            id=create_user_auth.id,
+            id=create_user.id,
             name=create_user.name,
             username=create_user_auth.username,
             email=create_user.email,
