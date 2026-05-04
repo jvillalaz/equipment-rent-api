@@ -48,6 +48,8 @@ class ReservationPersistence(IReservationService):
             status_id=reservation_status.id,
         )
 
+        await reservation.fetch_related("user", "equipment", "status")
+
         # Return response schema
         return ReservationResponseSchema(
             id=reservation.id,
@@ -135,9 +137,10 @@ class ReservationPersistence(IReservationService):
         """
         Updates the status of a specific reservation identified by its UUID.
         """
-        reservation = await Reservation.get_or_none(id=reservation_id)
+        reservation = await Reservation.get_or_none(id=reservation_id).prefetch_related("user", "equipment", "status")
         reservation.status_id = reservation_data.status_id
         await reservation.save(update_fields=["status_id"])
+        await reservation.fetch_related("status")
 
         reservation_response = ReservationResponseSchema(
             id=reservation.id,
