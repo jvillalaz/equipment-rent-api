@@ -164,6 +164,10 @@ class ReservationPersistence(IReservationService):
         """
         reservation = await Reservation.get_or_none(id=reservation_id)
         canceled_status = await ReservationStatus.get_or_none(name="Canceled")
+
+        if not canceled_status:
+            return None
+
         reservation.status_id = canceled_status.id
         await reservation.save(update_fields=["status_id"])
         return None
