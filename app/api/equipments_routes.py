@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, status, Path, Body
@@ -15,11 +14,11 @@ equipments_router = APIRouter(
 @equipments_router.get(
     "",
     status_code=status.HTTP_200_OK,
-    response_model=List[EquipmentResponseSchema],
+    response_model=list[EquipmentResponseSchema],
     summary="List all equipments",
     description="Returns a list of all registered equipments."
 )
-async def get_equipments() -> List[EquipmentResponseSchema]:
+async def get_equipments() -> list[EquipmentResponseSchema]:
     """
     Returns a list of all registered equipments.
     """

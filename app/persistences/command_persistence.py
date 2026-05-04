@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.database import CommandType, Command
@@ -13,12 +13,12 @@ class CommandPersistence(ICommandService):
     Persistence class responsible for authentication-related operations.
     """
     @classmethod
-    async def get_command_types(cls) -> List[CommandTypeResponseSchema]:
+    async def get_command_types(cls) -> list[CommandTypeResponseSchema]:
         """R
         Retrieves all available command types.
         """
         command_types = await CommandType.all()
-        commands_list: List[CommandTypeResponseSchema] = []
+        commands_list: list[CommandTypeResponseSchema] = []
 
         for command in command_types:
             command_response = CommandTypeResponseSchema(
@@ -74,7 +74,7 @@ class CommandPersistence(ICommandService):
     @classmethod
     async def get_commands(
             cls
-    ) -> List[CommandResponseSchema]:
+    ) -> list[CommandResponseSchema]:
         """
         Retrieves the list of all commands that have been executed in the system.
         """

@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, status, Body, Path
@@ -15,12 +14,12 @@ reservations_router = APIRouter(
 
 @reservations_router.get(
     "/status-reservation",
-    response_model=List[ReservationStatusResponseSchema],
+    response_model=list[ReservationStatusResponseSchema],
     status_code=status.HTTP_200_OK,
     summary="List reservation statuses",
     description="Returns all reservation statuses."
 )
-async def get_reservation_statuses() -> List[ReservationStatusResponseSchema]:
+async def get_reservation_statuses() -> list[ReservationStatusResponseSchema]:
     """
     Returns all possible reservation statuses.
     """
@@ -45,7 +44,7 @@ async def post_reservation(
 
 @reservations_router.get(
     "",
-    response_model=List[ReservationResponseSchema],
+    response_model=list[ReservationResponseSchema],
     status_code=status.HTTP_200_OK,
     summary="List all reservations",
     description="Returns a list of all reservations."

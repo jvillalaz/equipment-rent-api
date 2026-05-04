@@ -1,4 +1,4 @@
-from typing import Type, List
+from typing import Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException
@@ -24,7 +24,7 @@ class CommandService(Service):
         return cls
 
     @classmethod
-    async def get_command_types(cls) -> List[CommandTypeResponseSchema]:
+    async def get_command_types(cls) -> list[CommandTypeResponseSchema]:
         """
         Retrieves all available command types.
         """
@@ -48,7 +48,7 @@ class CommandService(Service):
     @classmethod
     async def get_commands(
             cls
-    ) -> List[CommandResponseSchema]:
+    ) -> list[CommandResponseSchema]:
         """
         Retrieves the list of all commands that have been executed in the system.
         """

@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException, ConflictException
@@ -22,7 +22,7 @@ class UserService(Service):
         return cls
 
     @classmethod
-    async def get_users(cls) -> List[UserResponseSchema]:
+    async def get_users(cls) -> list[UserResponseSchema]:
         """
         Retrieves a list of all registered users along with their authentication details.
         """

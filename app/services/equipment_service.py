@@ -1,4 +1,4 @@
-from typing import Type, List
+from typing import Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException, ConflictException
@@ -24,14 +24,14 @@ class EquipmentService(Service):
         return cls
 
     @classmethod
-    async def get_equipment_statuses(cls) -> List[EquipmentStatusResponseSchema]:
+    async def get_equipment_statuses(cls) -> list[EquipmentStatusResponseSchema]:
         """
         Retrieves all possible equipment statuses.
         """
         return await cls.equipment_repository.get_equipment_statuses()
 
     @classmethod
-    async def get_equipments(cls) -> List[EquipmentResponseSchema]:
+    async def get_equipments(cls) -> list[EquipmentResponseSchema]:
         """
         Returns a list of all registered equipments
         """
@@ -124,7 +124,7 @@ class EquipmentService(Service):
         return await cls.equipment_repository.delete_equipment(equipment_id)
 
     @classmethod
-    async def get_equipment_status_logs(cls) -> List[EquipmentStatusLogResponseSchema]:
+    async def get_equipment_status_logs(cls) -> list[EquipmentStatusLogResponseSchema]:
         """
         Retrieves a list of all equipment status logs from the database.
         """
@@ -134,7 +134,7 @@ class EquipmentService(Service):
     async def get_specific_equipment_status_logs(
             cls,
             equipment_id: UUID,
-    ) -> List[EquipmentStatusLogResponseSchema]:
+    ) -> list[EquipmentStatusLogResponseSchema]:
         """
         Retrieves a list of specific equipment status logs from the database.
         """

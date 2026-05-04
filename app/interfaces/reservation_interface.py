@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.schemas.reservation_schemas import ReservationStatusResponseSchema, ReservationRequestSchema, \
@@ -12,7 +12,7 @@ class IReservationService(ABC):
     """
     @classmethod
     @abstractmethod
-    async def get_reservation_statuses(cls) -> List[ReservationStatusResponseSchema]:
+    async def get_reservation_statuses(cls) -> list[ReservationStatusResponseSchema]:
         """
          Returns all possible reservation statuses.
         """
@@ -31,7 +31,7 @@ class IReservationService(ABC):
 
     @classmethod
     @abstractmethod
-    async def get_reservations(cls) -> List[ReservationResponseSchema]:
+    async def get_reservations(cls) -> list[ReservationResponseSchema]:
         """
         Lists all reservations.
         """

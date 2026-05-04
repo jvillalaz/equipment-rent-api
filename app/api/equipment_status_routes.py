@@ -1,4 +1,3 @@
-from typing import List
 
 from fastapi import APIRouter, status
 
@@ -12,12 +11,12 @@ equipment_status_router = APIRouter(
 
 @equipment_status_router.get(
     "",
-    response_model=List[EquipmentStatusResponseSchema],
+    response_model=list[EquipmentStatusResponseSchema],
     status_code=status.HTTP_200_OK,
     summary="List all possible equipment statuses",
     description="Returns all possible statuses that equipment can have.",
 )
-async def get_equipment_statuses() -> List[EquipmentStatusResponseSchema]:
+async def get_equipment_statuses() -> list[EquipmentStatusResponseSchema]:
     """
     Lists all equipment statuses.
     """

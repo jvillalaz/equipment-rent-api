@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.database import Equipment, EquipmentStatusLog
@@ -15,12 +15,12 @@ class EquipmentPersistence(IEquipmentService):
     Persistence class responsible for equipment-related operations.
     """
     @classmethod
-    async def get_equipment_statuses(cls) -> List[EquipmentStatusResponseSchema]:
+    async def get_equipment_statuses(cls) -> list[EquipmentStatusResponseSchema]:
         """
         Retrieves all possible equipment statuses.
         """
         status_record = await EquipmentStatus.all()
-        status_list: List[EquipmentStatusResponseSchema] = []
+        status_list: list[EquipmentStatusResponseSchema] = []
 
         for equipment_status in status_record:
             status_response = EquipmentStatusResponseSchema(
@@ -33,12 +33,12 @@ class EquipmentPersistence(IEquipmentService):
         return status_list
 
     @classmethod
-    async def get_equipments(cls) -> List[EquipmentResponseSchema]:
+    async def get_equipments(cls) -> list[EquipmentResponseSchema]:
         """
         Returns a list of all registered equipments
         """
         equipments_record = await Equipment.all().select_related('current_status')
-        equipments_list: List[EquipmentResponseSchema] = []
+        equipments_list: list[EquipmentResponseSchema] = []
 
         for equipment in equipments_record:
             equipment_response = EquipmentResponseSchema(
@@ -189,7 +189,7 @@ class EquipmentPersistence(IEquipmentService):
     async def _fetch_and_map_status_logs(
             cls,
             equipment_id: Optional[UUID] = None
-    ) -> List[EquipmentStatusLogResponseSchema]:
+    ) -> list[EquipmentStatusLogResponseSchema]:
         """
         Internal helper to fetch and map equipment status logs,
         optionally filtered by equipment_id.
@@ -216,7 +216,7 @@ class EquipmentPersistence(IEquipmentService):
         return result_list
 
     @classmethod
-    async def get_equipment_status_logs(cls) -> List[EquipmentStatusLogResponseSchema]:
+    async def get_equipment_status_logs(cls) -> list[EquipmentStatusLogResponseSchema]:
         """
         Retrieves a list of all equipment status logs from the database.
         """
@@ -226,7 +226,7 @@ class EquipmentPersistence(IEquipmentService):
     async def get_specific_equipment_status_logs(
             cls,
             equipment_id: UUID,
-    ) -> List[EquipmentStatusLogResponseSchema]:
+    ) -> list[EquipmentStatusLogResponseSchema]:
         """
         Retrieves a list of specific equipment status logs from the database.
         """

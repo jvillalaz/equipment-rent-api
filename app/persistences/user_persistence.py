@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.database import UserAuth
@@ -11,14 +11,14 @@ class UserPersistence(IUserService):
     Persistence class for user-related operations.
     """
     @classmethod
-    async def get_users(cls) -> List[UserResponseSchema]:
+    async def get_users(cls) -> list[UserResponseSchema]:
         """
         Retrieves a list of all registered users along with their authentication details.
         """
 
         # Fetch authentication records and prefetch related user profile data
         auth_records = await UserAuth.all().prefetch_related("user")
-        user_list: List[UserResponseSchema] = []
+        user_list: list[UserResponseSchema] = []
 
         # Convert each record into a unified UserResponseSchema
         for auth in auth_records:

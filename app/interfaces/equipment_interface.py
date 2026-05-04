@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.schemas.equipment_schemas import EquipmentResponseSchema, EquipmentStatusResponseSchema, \
@@ -13,7 +13,7 @@ class IEquipmentService(ABC):
     """
     @classmethod
     @abstractmethod
-    async def get_equipment_statuses(cls) -> List[EquipmentStatusResponseSchema]:
+    async def get_equipment_statuses(cls) -> list[EquipmentStatusResponseSchema]:
         """
         Retrieves all possible equipment statuses.
         """
@@ -21,7 +21,7 @@ class IEquipmentService(ABC):
 
     @classmethod
     @abstractmethod
-    async def get_equipments(cls) -> List[EquipmentResponseSchema]:
+    async def get_equipments(cls) -> list[EquipmentResponseSchema]:
         """
         Returns a list of all registered equipments
         """
@@ -96,7 +96,7 @@ class IEquipmentService(ABC):
 
     @classmethod
     @abstractmethod
-    async def get_equipment_status_logs(cls) -> List[EquipmentStatusLogResponseSchema]:
+    async def get_equipment_status_logs(cls) -> list[EquipmentStatusLogResponseSchema]:
         """
         Retrieves a list of all equipment status logs from the database.
         """
@@ -107,7 +107,7 @@ class IEquipmentService(ABC):
     async def get_specific_equipment_status_logs(
             cls,
             equipment_id: UUID,
-    ) -> List[EquipmentStatusLogResponseSchema]:
+    ) -> list[EquipmentStatusLogResponseSchema]:
         """
         Retrieves a list of specific equipment status logs from the database.
         """

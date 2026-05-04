@@ -1,4 +1,4 @@
-from typing import Type, List
+from typing import Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException
@@ -34,7 +34,7 @@ class ReservationService(Service):
         return cls
 
     @classmethod
-    async def get_reservation_statuses(cls) -> List[ReservationStatusResponseSchema]:
+    async def get_reservation_statuses(cls) -> list[ReservationStatusResponseSchema]:
         """
         Returns all possible reservation statuses.
         """
@@ -61,7 +61,7 @@ class ReservationService(Service):
         return await cls.reservation_repository.post_reservation(reservation_data)
 
     @classmethod
-    async def get_reservations(cls) -> List[ReservationResponseSchema]:
+    async def get_reservations(cls) -> list[ReservationResponseSchema]:
         """
         Lists all reservations.
         """

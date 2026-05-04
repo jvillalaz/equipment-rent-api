@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.schemas.command_schemas import CommandRequestSchema, CommandResponseSchema, CommandTypeResponseSchema
@@ -11,7 +11,7 @@ class ICommandService(ABC):
     """
     @classmethod
     @abstractmethod
-    async def get_command_types(cls) -> List[CommandTypeResponseSchema]:
+    async def get_command_types(cls) -> list[CommandTypeResponseSchema]:
         """
         Retrieves all available command types.
         """
@@ -32,7 +32,7 @@ class ICommandService(ABC):
     @abstractmethod
     async def get_commands(
             cls
-    ) -> List[CommandResponseSchema]:
+    ) -> list[CommandResponseSchema]:
         """
         Retrieves the list of all commands that have been executed in the system.
         """

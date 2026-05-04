@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, Path, Body
@@ -16,11 +15,11 @@ users_router = APIRouter(
 @users_router.get(
     "",
     status_code=status.HTTP_200_OK,
-    response_model=List[UserResponseSchema],
+    response_model=list[UserResponseSchema],
     summary="List all users",
     description="Returns a list of all registered users."
 )
-async def get_users() -> List[UserResponseSchema]:
+async def get_users() -> list[UserResponseSchema]:
     """
     Returns a list of all registered users.
     """

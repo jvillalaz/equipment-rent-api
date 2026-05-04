@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.schemas.user_auth_schemas import UserResponseSchema, UserUpdateSchema
@@ -13,7 +13,7 @@ class IUserService(ABC):
     @abstractmethod
     async def get_users(
             cls
-    ) -> List[UserResponseSchema]:
+    ) -> list[UserResponseSchema]:
         """
         Retrieves a list of all registered users along with their authentication details.
         """

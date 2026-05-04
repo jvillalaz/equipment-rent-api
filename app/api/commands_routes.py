@@ -1,4 +1,3 @@
-from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, status, Body, Path
@@ -13,9 +12,9 @@ commands_router = APIRouter(
 
 @commands_router.get(
     "/available-types",
-    response_model=List[CommandTypeResponseSchema]
+    response_model=list[CommandTypeResponseSchema]
 )
-async def get_command_types() -> List[CommandTypeResponseSchema]:
+async def get_command_types() -> list[CommandTypeResponseSchema]:
     """
     Retrieves all available command types that can be issued to equipment.
     \f

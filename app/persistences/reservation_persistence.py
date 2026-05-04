@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from app.interfaces.reservation_interface import IReservationService
@@ -13,12 +13,12 @@ class ReservationPersistence(IReservationService):
     """
 
     @classmethod
-    async def get_reservation_statuses(cls) -> List[ReservationStatusResponseSchema]:
+    async def get_reservation_statuses(cls) -> list[ReservationStatusResponseSchema]:
         """
         Returns all possible reservation statuses.
         """
         statuses = await ReservationStatus.all().order_by("created_at")
-        response: List[ReservationStatusResponseSchema] = []
+        response: list[ReservationStatusResponseSchema] = []
 
         for reservation_status in statuses:
             response.append(ReservationStatusResponseSchema(
@@ -60,12 +60,12 @@ class ReservationPersistence(IReservationService):
         )
 
     @classmethod
-    async def get_reservations(cls) -> List[ReservationResponseSchema]:
+    async def get_reservations(cls) -> list[ReservationResponseSchema]:
         """
         Lists all reservations.
         """
         reservations = Reservation.all().prefetch_related('user', 'equipment', 'status')
-        result: List[ReservationResponseSchema] = []
+        result: list[ReservationResponseSchema] = []
 
         async for reservation in reservations:
             result.append(
