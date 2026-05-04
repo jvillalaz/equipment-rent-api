@@ -24,7 +24,7 @@ class UserPersistence(IUserService):
         for auth in auth_records:
             user = auth.user
             user_response = UserResponseSchema(
-                id=auth.id,
+                id=auth.user.id,
                 username=auth.username,
                 name=user.name,
                 email=user.email,
@@ -45,13 +45,13 @@ class UserPersistence(IUserService):
         """
 
         # Fetch the UserAuth record and load its linked user profile
-        user_auth = await UserAuth.get_or_none(id=user_id).prefetch_related("user")
+        user_auth = await UserAuth.get_or_none(user_id=user_id).prefetch_related("user")
 
         if not user_auth:
             return None
 
         user_response = UserResponseSchema(
-            id=user_auth.id,
+            id=user_auth.user.id,
             username=user_auth.username,
             name=user_auth.user.name,
             email=user_auth.user.email,
@@ -71,7 +71,7 @@ class UserPersistence(IUserService):
         """
 
         # Fetch the user and their linked profile
-        user_auth = await UserAuth.get_or_none(id=user_id).prefetch_related("user")
+        user_auth = await UserAuth.get_or_none(user_id=user_id).prefetch_related("user")
 
         # Update profile fields only if new values were provided
         if user_data.name is not None:
@@ -91,7 +91,7 @@ class UserPersistence(IUserService):
         await user_auth.save()
 
         return UserResponseSchema(
-            id=user_auth.id,
+            id=user_auth.user.id,
             username=user_auth.username,
             name=user_auth.user.name,
             email=user_auth.user.email,
@@ -107,7 +107,7 @@ class UserPersistence(IUserService):
         Deactivates a user by setting is_active to False.
         """
         # Load the user’s authentication and profile info
-        user_auth = await UserAuth.get_or_none(id=user_id).prefetch_related("user")
+        user_auth = await UserAuth.get_or_none(user_id=user_id).prefetch_related("user")
 
         # Mark user as inactive
         user_auth.user.is_active = False
