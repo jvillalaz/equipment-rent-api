@@ -5,7 +5,7 @@ from app.database import CommandType, Command
 from app.interfaces.command_interface import ICommandService
 from app.mqqt_client.mqtt_service import publish_command
 from app.schemas.command_schemas import CommandTypeResponseSchema, CommandRequestSchema, CommandResponseSchema, \
-    CommandPayloadSchema
+    CommandPayloadSchema, CommandTypeEnum
 
 
 class CommandPersistence(ICommandService):
@@ -50,7 +50,7 @@ class CommandPersistence(ICommandService):
 
         # Define payload for publish
         command_payload = CommandPayloadSchema(
-            command_type=command_type.name,
+            command_type=CommandTypeEnum(command_type.name),
             payload=command_data.payload
         )
 

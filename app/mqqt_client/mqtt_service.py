@@ -16,7 +16,7 @@ def on_connect(client, flags, rc, properties):
 
 mqtt.on_connect = on_connect
 
-def publish_command(equipment_id: UUID, command: CommandPayloadSchema):
+def publish_command(equipment_id: UUID, command: dict):
     topic = f"equipments/{equipment_id}/commands"
     mqtt.publish(topic, json.dumps(command))
     print(f"[MQTT] Command published for {topic}: {command}")

@@ -30,7 +30,7 @@ class UserAuth(models.Model):
 
     # This field is not part of the actual model definition.
     # It's only added to help the IDE recognize the FK ID attribute.
-    user_id: Optional[uuid.UUID]
+    user_id: uuid.UUID
 
     class Meta:
         table = "UserAuth"

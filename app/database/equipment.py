@@ -33,7 +33,7 @@ class Equipment(Model):
 
     # This field is not part of the actual model definition.
     # It's only added to help the IDE recognize the FK ID attribute.
-    current_status_id: Optional[uuid.UUID]
+    current_status_id: uuid.UUID | None
 
     class Meta:
         table = "Equipments"
