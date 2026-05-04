@@ -32,7 +32,7 @@ class IEquipmentService(ABC):
     async def get_specific_equipment(
             cls,
             equipment_id: UUID
-    ) -> EquipmentResponseSchema:
+    ) -> Optional[EquipmentResponseSchema]:
         """
         Retrieves specific equipment by its ID.
         """
