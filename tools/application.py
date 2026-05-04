@@ -1,7 +1,6 @@
 from datetime import datetime, timezone
 from typing import Any
 
-from bson.objectid import ObjectId
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
@@ -30,7 +29,6 @@ class DTO(BaseModel):
         alias_generator=to_camel_without_underscore,
         json_encoders={
             datetime: lambda v: v.isoformat().replace("+00:00", "Z"),
-            ObjectId: lambda v: str(v),
         },
     )
 
@@ -40,11 +38,6 @@ class DTO(BaseModel):
             return exclude_empty_lists(data)
 
         return data
-
-    def __init__(self, **attrs):
-        if '_id' in attrs and isinstance(attrs['_id'], ObjectId):
-            attrs['_id'] = str(attrs['_id'])
-        super().__init__(**attrs)
 
 
 class MetaService(type):
