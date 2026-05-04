@@ -58,9 +58,9 @@ class AuthService(Service):
         """
         Extracts the user from the JWT token and ensures they are active.
         """
-        asd = await cls.auth_repository.get_current_active_user(token)
+        user = await cls.auth_repository.get_current_active_user(token)
 
-        if not asd:
+        if not user:
             raise UnauthorizedException(detail="Authentication credentials were missing or invalid")
 
-        return asd
+        return user
