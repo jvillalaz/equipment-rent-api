@@ -1,0 +1,58 @@
+version: '3'
+services:
+  equipment-rent:
+    container_name: equipment-rent
+    build: .
+    depends_on:
+      - rent-postgres
+      - rent-mosquitto
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - rent-network
+    environment:
+      - MQTT_BROKER_HOST=rent-mosquitto
+      - MQTT_BROKER_PORT=1883
+
+  rent-postgres:
+    image: postgres:16
+    container_name: postgres-rentdb
+    environment:
+      POSTGRES_USER: "rentdb"
+      POSTGRES_PASSWORD: "rentdb"
+      POSTGRES_DB: "rent"
+    volumes:
+      - rentdb-data:/var/lib/postgresql/data
+      - ./create-tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - rent-network
+
+  rent-mosquitto:
+    image: eclipse-mosquitto
+    container_name: rent-mqtt5
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./config:/mosquitto/config:rw
+      - ./data:/mosquitto/data:rw
+      - ./log:/mosquitto/log:rw
+    restart: unless-stopped
+    networks:
+      - rent-network
+
+volumes:
+  config:
+  data:
+  log:
+  rentdb-data:
+
+networks:
+  rent-network:
+    name: rent-network
+    driver: bridge
