@@ -6,7 +6,7 @@ from app.interfaces.equipment_interface import IEquipmentService
 
 from app.database import EquipmentStatus
 from app.schemas.equipment_schemas import EquipmentResponseSchema, EquipmentStatusResponseSchema, \
-    EquipmentRequestSchema, EquipmentUpdateSchema
+    EquipmentRequestSchema, EquipmentUpdateSchema, EquipmentStatusEnum
 from app.schemas.equipment_status_log_schemas import EquipmentStatusLogResponseSchema
 
 
@@ -46,7 +46,7 @@ class EquipmentPersistence(IEquipmentService):
             equipment_response = EquipmentResponseSchema(
                 id=equipment.id,
                 name=equipment.name,
-                current_status_name=equipment.current_status.name,
+                current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
                 location=equipment.location,
                 last_heartbeat=equipment.last_heartbeat,
                 created_at=equipment.created_at
@@ -73,7 +73,7 @@ class EquipmentPersistence(IEquipmentService):
         equipment_response = EquipmentResponseSchema(
             id=equipment.id,
             name=equipment.name,
-            current_status_name=equipment.current_status.name,
+            current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
             location=equipment.location,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
@@ -120,7 +120,7 @@ class EquipmentPersistence(IEquipmentService):
         return EquipmentResponseSchema(
             id=equipment.id,
             name=equipment.name,
-            current_status_name=equipment.current_status.name,
+            current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
             location=equipment.location,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
@@ -146,7 +146,7 @@ class EquipmentPersistence(IEquipmentService):
         return EquipmentResponseSchema(
             id=equipment.id,
             name=equipment.name,
-            current_status_name=equipment.current_status.name,
+            current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
             location=equipment.location,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
@@ -186,7 +186,7 @@ class EquipmentPersistence(IEquipmentService):
         return EquipmentResponseSchema(
             id=equipment.id,
             name=equipment.name,
-            current_status_name=equipment.current_status.name,
+            current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
             location=equipment.location,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at

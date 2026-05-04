@@ -142,7 +142,7 @@ class ReservationPersistence(IReservationService):
             cls,
             reservation_id: UUID,
             reservation_data: ReservationUpdateSchema,
-    ) -> ReservationResponseSchema:
+    ) -> ReservationResponseSchema | None:
         """
         Updates the status of a specific reservation identified by its UUID.
         """
