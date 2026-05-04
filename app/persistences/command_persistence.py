@@ -1,3 +1,4 @@
+from typing_extensions import override
 from uuid import UUID
 
 from app.database import CommandType, Command
@@ -11,6 +12,7 @@ class CommandPersistence(ICommandService):
     """
     Persistence class responsible for authentication-related operations.
     """
+    @override
     @classmethod
     async def get_command_types(cls) -> list[CommandTypeResponseSchema]:
         """
@@ -29,6 +31,7 @@ class CommandPersistence(ICommandService):
 
         return commands_list
 
+    @override
     @classmethod
     async def post_command(
             cls,
@@ -70,6 +73,7 @@ class CommandPersistence(ICommandService):
             created_at=command.created_at
         )
 
+    @override
     @classmethod
     async def get_commands(
             cls
@@ -94,6 +98,7 @@ class CommandPersistence(ICommandService):
 
         return commands_list
 
+    @override
     @classmethod
     async def get_specific_command(
             cls,

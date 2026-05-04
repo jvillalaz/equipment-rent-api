@@ -1,3 +1,4 @@
+from typing_extensions import override
 from datetime import timedelta, datetime, timezone
 
 import jwt
@@ -13,6 +14,7 @@ class AuthPersistence(IAuthService):
     """
     Persistence class responsible for authentication-related operations.
     """
+    @override
     @classmethod
     async def get_password_hash(cls, password: str) -> str:
         """
@@ -20,6 +22,7 @@ class AuthPersistence(IAuthService):
         """
         return pwd_context.hash(password)
 
+    @override
     @classmethod
     async def post_user(
             cls,
@@ -56,6 +59,7 @@ class AuthPersistence(IAuthService):
 
         return user_response
 
+    @override
     @classmethod
     async def login_user(
             cls,
@@ -78,6 +82,7 @@ class AuthPersistence(IAuthService):
         access_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return access_token
 
+    @override
     @classmethod
     async def get_current_active_user(
             cls,

@@ -1,3 +1,4 @@
+from typing_extensions import override
 from uuid import UUID
 
 from app.interfaces.reservation_interface import IReservationService
@@ -11,6 +12,7 @@ class ReservationPersistence(IReservationService):
     Persistence class responsible for equipment-related operations.
     """
 
+    @override
     @classmethod
     async def get_reservation_statuses(cls) -> list[ReservationStatusResponseSchema]:
         """
@@ -28,6 +30,7 @@ class ReservationPersistence(IReservationService):
 
         return response
 
+    @override
     @classmethod
     async def post_reservation(
             cls,
@@ -60,6 +63,7 @@ class ReservationPersistence(IReservationService):
             created_at=reservation.created_at,
         )
 
+    @override
     @classmethod
     async def get_reservations(cls) -> list[ReservationResponseSchema]:
         """
@@ -83,6 +87,7 @@ class ReservationPersistence(IReservationService):
 
         return result
 
+    @override
     @classmethod
     async def get_specific_reservation(
             cls,
@@ -106,6 +111,7 @@ class ReservationPersistence(IReservationService):
             created_at=reservation.created_at,
         )
 
+    @override
     @classmethod
     async def get_specific_reservation_status(
             cls,
@@ -127,6 +133,7 @@ class ReservationPersistence(IReservationService):
 
         return reservation_response
 
+    @override
     @classmethod
     async def patch_reservation(
             cls,
@@ -153,6 +160,7 @@ class ReservationPersistence(IReservationService):
 
         return reservation_response
 
+    @override
     @classmethod
     async def delete_reservation(
             cls,

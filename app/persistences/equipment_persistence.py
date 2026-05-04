@@ -1,3 +1,4 @@
+from typing_extensions import override
 from uuid import UUID
 
 from app.database import Equipment, EquipmentStatusLog
@@ -13,6 +14,7 @@ class EquipmentPersistence(IEquipmentService):
     """
     Persistence class responsible for equipment-related operations.
     """
+    @override
     @classmethod
     async def get_equipment_statuses(cls) -> list[EquipmentStatusResponseSchema]:
         """
@@ -31,6 +33,7 @@ class EquipmentPersistence(IEquipmentService):
 
         return status_list
 
+    @override
     @classmethod
     async def get_equipments(cls) -> list[EquipmentResponseSchema]:
         """
@@ -53,6 +56,7 @@ class EquipmentPersistence(IEquipmentService):
         return equipments_list
 
 
+    @override
     @classmethod
     async def get_specific_equipment(
             cls,
@@ -77,6 +81,7 @@ class EquipmentPersistence(IEquipmentService):
 
         return equipment_response
 
+    @override
     @classmethod
     async def get_equipment_status_by_id(
             cls,
@@ -98,6 +103,7 @@ class EquipmentPersistence(IEquipmentService):
 
         return status_response
 
+    @override
     @classmethod
     async def get_equipment_by_name(
             cls,
@@ -120,6 +126,7 @@ class EquipmentPersistence(IEquipmentService):
             created_at=equipment.created_at
         )
 
+    @override
     @classmethod
     async def post_equipment(
             cls,
@@ -145,6 +152,7 @@ class EquipmentPersistence(IEquipmentService):
             created_at=equipment.created_at
         )
 
+    @override
     @classmethod
     async def patch_equipment(
             cls,
@@ -181,6 +189,7 @@ class EquipmentPersistence(IEquipmentService):
             created_at=equipment.created_at
         )
 
+    @override
     @classmethod
     async def delete_equipment(
             cls,
@@ -220,6 +229,7 @@ class EquipmentPersistence(IEquipmentService):
 
         return result_list
 
+    @override
     @classmethod
     async def get_equipment_status_logs(cls) -> list[EquipmentStatusLogResponseSchema]:
         """
@@ -227,6 +237,7 @@ class EquipmentPersistence(IEquipmentService):
         """
         return await cls._fetch_and_map_status_logs()
 
+    @override
     @classmethod
     async def get_specific_equipment_status_logs(
             cls,

@@ -1,3 +1,4 @@
+from typing_extensions import override
 from uuid import UUID
 
 from app.database import UserAuth
@@ -9,6 +10,7 @@ class UserPersistence(IUserService):
     """
     Persistence class for user-related operations.
     """
+    @override
     @classmethod
     async def get_users(cls) -> list[UserResponseSchema]:
         """
@@ -34,6 +36,7 @@ class UserPersistence(IUserService):
 
         return user_list
 
+    @override
     @classmethod
     async def get_specific_user(
             cls,
@@ -59,6 +62,7 @@ class UserPersistence(IUserService):
 
         return user_response
 
+    @override
     @classmethod
     async def patch_user(
             cls,
@@ -97,6 +101,7 @@ class UserPersistence(IUserService):
             is_active=user_auth.user.is_active
         )
 
+    @override
     @classmethod
     async def delete_user(
             cls,
