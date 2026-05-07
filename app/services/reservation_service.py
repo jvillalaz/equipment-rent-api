@@ -2,7 +2,6 @@ from typing import Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException
-from app.interfaces.auth_interface import IAuthService
 from app.interfaces.equipment_interface import IEquipmentService
 from app.interfaces.reservation_interface import IReservationService
 from app.interfaces.user_interface import IUserService
@@ -17,19 +16,16 @@ class ReservationService(Service):
     """
     reservation_repository: Type[IReservationService]
     equipment_repository: Type[IEquipmentService]
-    auth_repository: Type[IAuthService]
     user_repository: Type[IUserService]
 
     def __new__(
         cls,
         reservation_repository: Type[IReservationService],
         equipment_repository: Type[IEquipmentService],
-        auth_repository: Type[IAuthService],
         user_repository: Type[IUserService],
     ):
         cls.reservation_repository = reservation_repository
         cls.equipment_repository = equipment_repository
-        cls.auth_repository = auth_repository
         cls.user_repository = user_repository
         return cls
 
@@ -108,7 +104,10 @@ class ReservationService(Service):
         """
         await cls.get_specific_reservation(reservation_id)
         await cls.get_specific_reservation_status(reservation_data.status_id)
-        return await cls.reservation_repository.patch_reservation(reservation_id, reservation_data)
+        result = await cls.reservation_repository.patch_reservation(reservation_id, reservation_data)
+        if result is None:
+            raise NotFoundException(detail=f"Reservation '{reservation_id}' not found")
+        return result
 
     @classmethod
     async def delete_reservation(

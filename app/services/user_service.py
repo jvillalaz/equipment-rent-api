@@ -27,9 +27,7 @@ class UserService(Service):
         Retrieves a list of all registered users along with their authentication details.
         """
 
-        # Retrieve the user from the repository
-        user_list = await cls.user_repository.get_users()
-        return user_list
+        return await cls.user_repository.get_users()
 
     @classmethod
     async def get_specific_user(cls, user_id: UUID) -> UserResponseSchema:
@@ -60,7 +58,7 @@ class UserService(Service):
 
         # Handle case where username is already in use
         if not update_user:
-            raise ConflictException(detail=f"The '{user_data.username} is already taken'")
+            raise ConflictException(detail=f"Username '{user_data.username}' is already taken")
 
         return update_user
 
@@ -74,7 +72,4 @@ class UserService(Service):
         # Ensure the user exists
         await cls.get_specific_user(user_id)
 
-        # Deactivate user
-        delete_user = await cls.user_repository.delete_user(user_id)
-
-        return delete_user
+        await cls.user_repository.delete_user(user_id)

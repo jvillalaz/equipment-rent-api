@@ -3,8 +3,7 @@ from uuid import UUID
 
 from app.core.exceptions import NotFoundException
 from app.interfaces.command_interface import ICommandService
-from app.schemas.command_schemas import CommandRequestSchema, CommandResponseSchema, CommandTypeRequestSchema, \
-    CommandTypeResponseSchema
+from app.schemas.command_schemas import CommandRequestSchema, CommandResponseSchema, CommandTypeResponseSchema
 from app.services.equipment_service import EquipmentService
 from tools.application import Service
 
