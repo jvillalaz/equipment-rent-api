@@ -1,11 +1,12 @@
-version: '3'
 services:
   equipment-rent:
     container_name: equipment-rent
     build: .
     depends_on:
-      - rent-postgres
-      - rent-mosquitto
+      rent-postgres:
+        condition: service_healthy
+      rent-mosquitto:
+        condition: service_started
     volumes:
       - .:/app
     ports:
@@ -16,6 +17,8 @@ services:
     environment:
       - MQTT_BROKER_HOST=rent-mosquitto
       - MQTT_BROKER_PORT=1883
+      - DATABASE_URL=postgres://rentdb:rentdb@rent-postgres:5432/rent
+      - SECRET_KEY=ffc2c1bf196a3a3ebbfcf731f4b03fe57239c2e81be50bd23a36e472ef3913b2
 
   rent-postgres:
     image: postgres:16
@@ -31,13 +34,18 @@ services:
       - "5432:5432"
     networks:
       - rent-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rentdb -d rent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   rent-mosquitto:
     image: eclipse-mosquitto
     container_name: rent-mqtt5
     ports:
-      - "1883:1883" #default mqtt port
-      - "9001:9001" #default mqtt port for websockets
+      - "1883:1883"
+      - "9001:9001"
     volumes:
       - ./config:/mosquitto/config:rw
       - ./data:/mosquitto/data:rw
@@ -47,9 +55,6 @@ services:
       - rent-network
 
 volumes:
-  config:
-  data:
-  log:
   rentdb-data:
 
 networks:
