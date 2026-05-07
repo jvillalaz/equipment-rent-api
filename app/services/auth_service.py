@@ -1,4 +1,4 @@
-from typing import Type
+from typing import ClassVar, Type
 
 from app.core.exceptions import ConflictException, UnauthorizedException
 from app.interfaces.auth_interface import IAuthService
@@ -10,7 +10,7 @@ class AuthService(Service):
     """
     Service class responsible for authentication-related operations.
     """
-    auth_repository: Type[IAuthService]
+    auth_repository: ClassVar[Type[IAuthService]]
 
     def __new__(
         cls,

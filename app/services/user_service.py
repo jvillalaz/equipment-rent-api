@@ -1,4 +1,4 @@
-from typing import Type
+from typing import ClassVar, Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException, ConflictException
@@ -11,7 +11,7 @@ class UserService(Service):
     """
     Service class for user-related operations.
     """
-    user_repository: Type[IUserService]
+    user_repository: ClassVar[Type[IUserService]]
 
     def __new__(
         cls,

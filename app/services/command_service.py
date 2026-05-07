@@ -1,4 +1,4 @@
-from typing import Type
+from typing import ClassVar, Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException
@@ -9,8 +9,8 @@ from tools.application import Service
 
 
 class CommandService(Service):
-    command_repository: Type[ICommandService]
-    equipment_service: Type[EquipmentService]
+    command_repository: ClassVar[Type[ICommandService]]
+    equipment_service: ClassVar[Type[EquipmentService]]
 
     def __new__(
             cls,

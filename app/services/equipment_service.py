@@ -1,4 +1,4 @@
-from typing import Type
+from typing import ClassVar, Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException, ConflictException
@@ -13,7 +13,7 @@ class EquipmentService(Service):
     """
     Service class responsible for equipment-related operations.
     """
-    equipment_repository: Type[IEquipmentService]
+    equipment_repository: ClassVar[Type[IEquipmentService]]
 
     def __new__(
         cls,

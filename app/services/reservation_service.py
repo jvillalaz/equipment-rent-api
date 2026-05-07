@@ -1,4 +1,4 @@
-from typing import Type
+from typing import ClassVar, Type
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException
@@ -14,9 +14,9 @@ class ReservationService(Service):
     """
     Service class responsible for reservation-related operations.
     """
-    reservation_repository: Type[IReservationService]
-    equipment_repository: Type[IEquipmentService]
-    user_repository: Type[IUserService]
+    reservation_repository: ClassVar[Type[IReservationService]]
+    equipment_repository: ClassVar[Type[IEquipmentService]]
+    user_repository: ClassVar[Type[IUserService]]
 
     def __new__(
         cls,
