@@ -1,24 +1,20 @@
 from datetime import datetime, timezone
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_serializer
 from pydantic.alias_generators import to_camel
 
-def naive_utcnow():
+
+def naive_utcnow() -> datetime:
     return datetime.now(timezone.utc).replace(tzinfo=None)
 
-def to_naive_utc(dt: datetime) -> datetime:
-    if dt.tzinfo is not None:
-        return dt.astimezone(timezone.utc).replace(tzinfo=None)
-    return dt
 
-def to_camel_without_underscore(v: str):
-    camel = to_camel(v)
-    return camel.replace("_", "")
+def to_camel_without_underscore(v: str) -> str:
+    return to_camel(v).replace("_", "")
 
 
-def exclude_empty_lists(model_dict):
-    return {key: value for key, value in model_dict.items() if not (isinstance(value, (list, dict)) and not value)}
+def exclude_empty_collections(model_dict: dict[str, Any]) -> dict[str, Any]:
+    return {k: v for k, v in model_dict.items() if not (isinstance(v, (list, dict)) and not v)}
 
 
 class DTO(BaseModel):
@@ -27,35 +23,22 @@ class DTO(BaseModel):
         populate_by_name=True,
         arbitrary_types_allowed=True,
         alias_generator=to_camel_without_underscore,
-        json_encoders={
-            datetime: lambda v: v.isoformat().replace("+00:00", "Z"),
-        },
     )
 
-    def model_dump(self, exclude_none=False, **kwargs) -> dict[str, Any]:
-        data = super().model_dump(**kwargs)
-        if exclude_none:
-            return exclude_empty_lists(data)
+    @model_serializer(mode="wrap")
+    def _serialize(self, handler: Any) -> dict[str, Any]:
+        data = handler(self)
+        return {
+            k: v.isoformat().replace("+00:00", "Z") if isinstance(v, datetime) else v
+            for k, v in data.items()
+        }
 
+    def model_dump(self, exclude_empty: bool = False, **kwargs) -> dict[str, Any]:
+        data = super().model_dump(**kwargs)
+        if exclude_empty:
+            return exclude_empty_collections(data)
         return data
 
 
-class MetaService(type):
-
-    def __new__(mcs, *args, **kwargs):
-
-        new_class = super().__new__(mcs, *args, **kwargs)
-        for property_name in new_class.__dict__:
-            property_value = getattr(new_class, property_name)
-
-            if callable(property_value):
-                if hasattr(property_value, "__func__"):
-                    setattr(property_value.__func__, "_doc_exceptions", "")
-                else:
-                    setattr(property_value, "_doc_exceptions", "")
-
-        return new_class
-
-
-class Service(metaclass=MetaService):
+class Service:
     pass
