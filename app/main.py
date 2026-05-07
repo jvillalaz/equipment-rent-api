@@ -2,6 +2,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Depends
+from tortoise import Tortoise
 
 from app.api.auth_routes import auth_router
 from app.api.commands_routes import commands_router
@@ -10,7 +11,7 @@ from app.api.equipment_status_logs_routes import equipment_status_logs_router
 from app.api.equipments_routes import equipments_router
 from app.api.reservations_routes import reservations_router
 from app.api.users_routes import users_router
-from app.core.config import init_db, connect_mqtt, oauth2_scheme
+from app.core.config import init_db, connect_mqtt, disconnect_mqtt, oauth2_scheme
 from utils.dependencies import inject_dependencies
 from app.core.seeds import seed_equipment_statuses, seed_reservation_statuses, seed_command_types
 from fastapi.middleware.cors import CORSMiddleware
@@ -56,6 +57,8 @@ async def lifespan(application: FastAPI):
     await seed_command_types()
     inject_dependencies()
     yield
+    await disconnect_mqtt()
+    await Tortoise.close_connections()
 
 app = FastAPI(
     title="Equipment Reservation and Control API",

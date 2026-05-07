@@ -15,6 +15,11 @@ MQTT_CLIENT_ID = os.getenv("MQTT_CLIENT_ID", "equipment-rent-api")
 mqtt = MQTTClient(MQTT_CLIENT_ID)
 
 
+async def disconnect_mqtt():
+    await mqtt.disconnect()
+    print("[MQTT] Disconnected")
+
+
 # Connects to the MQTT broker with retry logic
 async def connect_mqtt(retries=5, delay=2):
     for attempt in range(retries):
