@@ -82,10 +82,10 @@ app.add_middleware(
 )
 
 # Register the API routes to the FastAPI application
-app.include_router(users_router)
-app.include_router(equipments_router, dependencies=[Depends(oauth2_scheme)])
-app.include_router(equipment_status_logs_router)
-app.include_router(equipment_status_router)
 app.include_router(auth_router)
+app.include_router(users_router, dependencies=[Depends(oauth2_scheme)])
+app.include_router(equipments_router, dependencies=[Depends(oauth2_scheme)])
+app.include_router(equipment_status_router, dependencies=[Depends(oauth2_scheme)])
+app.include_router(equipment_status_logs_router, dependencies=[Depends(oauth2_scheme)])
 app.include_router(reservations_router, dependencies=[Depends(oauth2_scheme)])
 app.include_router(commands_router, dependencies=[Depends(oauth2_scheme)])

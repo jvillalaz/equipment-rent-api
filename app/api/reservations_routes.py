@@ -96,7 +96,7 @@ async def patch_reservation(
 @reservations_router.delete(
     "/{reservationId}",
     response_model=None,
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     summary="Cancel reservation",
     description="Cancels a reservation."
 )

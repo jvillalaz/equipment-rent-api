@@ -68,16 +68,14 @@ class EquipmentService(Service):
     async def get_equipment_by_name(
             cls,
             equipment_name: str,
-    ) -> EquipmentResponseSchema:
+    ) -> None:
         """
-        Fetches equipment by name and raises ConflictException if found.
+        Raises ConflictException if equipment with the given name already exists.
         """
-        equipment_name = await cls.equipment_repository.get_equipment_by_name(equipment_name)
+        existing = await cls.equipment_repository.get_equipment_by_name(equipment_name)
 
-        if equipment_name:
-            raise ConflictException(detail=f"Equipment {equipment_name} already exists")
-
-        return equipment_name
+        if existing:
+            raise ConflictException(detail=f"Equipment '{equipment_name}' already exists")
 
 
     @classmethod
@@ -104,11 +102,14 @@ class EquipmentService(Service):
         Updates equipment information.
         """
         await cls.get_specific_equipment(equipment_id)
-        await cls.get_equipment_status_by_id(equipment_data.current_status_id)
-        equipment_response =  await cls.equipment_repository.patch_equipment(equipment_id, equipment_data)
+
+        if equipment_data.current_status_id is not None:
+            await cls.get_equipment_status_by_id(equipment_data.current_status_id)
+
+        equipment_response = await cls.equipment_repository.patch_equipment(equipment_id, equipment_data)
 
         if not equipment_response:
-            raise ConflictException(detail=f"Equipment {EquipmentUpdateSchema.name} already exists")
+            raise ConflictException(detail=f"Equipment '{equipment_data.name}' already exists")
 
         return equipment_response
 

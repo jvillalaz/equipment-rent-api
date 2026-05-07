@@ -102,13 +102,14 @@ async def delete_equipment(
 @equipments_router.get(
     "/{equipmentId}/status",
     status_code=status.HTTP_200_OK,
+    response_model=EquipmentResponseSchema,
     summary="Get equipment current status",
     description="Returns the current status of the specified equipment."
 )
 async def get_equipment_status(
-        equipment_id: str = Path(..., description="Unique identifier of the equipment.", alias="equipmentId"),
-):
+        equipment_id: UUID = Path(..., description="Unique identifier of the equipment.", alias="equipmentId"),
+) -> EquipmentResponseSchema:
     """
     Retrieves current status of the equipment.
     """
-    return f"get status for equipment {equipment_id}"
+    return await EquipmentService.get_specific_equipment(equipment_id)

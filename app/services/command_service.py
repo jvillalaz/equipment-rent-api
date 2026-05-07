@@ -38,10 +38,7 @@ class CommandService(Service):
         """
         Validates the existence of the equipment and create/post command.
         """
-        equipment_data = await cls.equipment_service.get_specific_equipment(command_data.equipment_id)
-
-        if not equipment_data:
-            raise NotFoundException(detail=f"Equipment with id '{equipment_data.equipment_id}' not found")
+        await cls.equipment_service.get_specific_equipment(command_data.equipment_id)
 
         return await cls.command_repository.post_command(command_data)
 
