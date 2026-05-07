@@ -1,4 +1,4 @@
-from typing import ClassVar, Type
+from typing import ClassVar
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException
@@ -9,13 +9,13 @@ from tools.application import Service
 
 
 class CommandService(Service):
-    command_repository: ClassVar[Type[ICommandService]]
-    equipment_service: ClassVar[Type[EquipmentService]]
+    command_repository: ClassVar[type[ICommandService]]
+    equipment_service: ClassVar[type[EquipmentService]]
 
     def __new__(
             cls,
-            command_repository: Type[ICommandService],
-            equipment_service: Type[EquipmentService],
+            command_repository: type[ICommandService],
+            equipment_service: type[EquipmentService],
     ):
         # Assign the equipment repository implementation to the class.
         cls.command_repository = command_repository
@@ -37,7 +37,7 @@ class CommandService(Service):
         """
         Validates the existence of the equipment and create/post command.
         """
-        await cls.equipment_service.get_specific_equipment(command_data.equipment_id)
+        _ = await cls.equipment_service.get_specific_equipment(command_data.equipment_id)
 
         return await cls.command_repository.post_command(command_data)
 

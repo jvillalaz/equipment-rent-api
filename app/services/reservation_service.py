@@ -1,4 +1,4 @@
-from typing import ClassVar, Type
+from typing import ClassVar
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException
@@ -14,15 +14,15 @@ class ReservationService(Service):
     """
     Service class responsible for reservation-related operations.
     """
-    reservation_repository: ClassVar[Type[IReservationService]]
-    equipment_repository: ClassVar[Type[IEquipmentService]]
-    user_repository: ClassVar[Type[IUserService]]
+    reservation_repository: ClassVar[type[IReservationService]]
+    equipment_repository: ClassVar[type[IEquipmentService]]
+    user_repository: ClassVar[type[IUserService]]
 
     def __new__(
         cls,
-        reservation_repository: Type[IReservationService],
-        equipment_repository: Type[IEquipmentService],
-        user_repository: Type[IUserService],
+        reservation_repository: type[IReservationService],
+        equipment_repository: type[IEquipmentService],
+        user_repository: type[IUserService],
     ):
         cls.reservation_repository = reservation_repository
         cls.equipment_repository = equipment_repository
@@ -102,8 +102,8 @@ class ReservationService(Service):
         """
         Updates the status of a specific reservation identified by its UUID.
         """
-        await cls.get_specific_reservation(reservation_id)
-        await cls.get_specific_reservation_status(reservation_data.status_id)
+        _ = await cls.get_specific_reservation(reservation_id)
+        _ = await cls.get_specific_reservation_status(reservation_data.status_id)
         result = await cls.reservation_repository.patch_reservation(reservation_id, reservation_data)
         if result is None:
             raise NotFoundException(detail=f"Reservation '{reservation_id}' not found")
@@ -117,5 +117,5 @@ class ReservationService(Service):
         """
         Cancels the specified reservation by setting its status to "Canceled".
         """
-        await cls.get_specific_reservation(reservation_id)
+        _ = await cls.get_specific_reservation(reservation_id)
         return await cls.reservation_repository.delete_reservation(reservation_id)

@@ -1,4 +1,4 @@
-from typing import ClassVar, Type
+from typing import ClassVar
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException, ConflictException
@@ -13,11 +13,11 @@ class EquipmentService(Service):
     """
     Service class responsible for equipment-related operations.
     """
-    equipment_repository: ClassVar[Type[IEquipmentService]]
+    equipment_repository: ClassVar[type[IEquipmentService]]
 
     def __new__(
         cls,
-        equipment_repository: Type[IEquipmentService],
+        equipment_repository: type[IEquipmentService],
     ):
         # Assign the equipment repository implementation to the class.
         cls.equipment_repository = equipment_repository
@@ -86,7 +86,7 @@ class EquipmentService(Service):
         """
         Creates a new equipment.
         """
-        await cls.get_equipment_status_by_id(equipment_data.current_status_id)
+        _ = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
         await cls.get_equipment_by_name(equipment_data.name)
 
         equipment = await cls.equipment_repository.post_equipment(equipment_data)
@@ -101,10 +101,10 @@ class EquipmentService(Service):
         """
         Updates equipment information.
         """
-        await cls.get_specific_equipment(equipment_id)
+        _ = await cls.get_specific_equipment(equipment_id)
 
         if equipment_data.current_status_id is not None:
-            await cls.get_equipment_status_by_id(equipment_data.current_status_id)
+            _ = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
 
         equipment_response = await cls.equipment_repository.patch_equipment(equipment_id, equipment_data)
 
@@ -121,7 +121,7 @@ class EquipmentService(Service):
         """
         Deletes specific equipment by its ID.
         """
-        await cls.get_specific_equipment(equipment_id)
+        _ = await cls.get_specific_equipment(equipment_id)
         return await cls.equipment_repository.delete_equipment(equipment_id)
 
     @classmethod

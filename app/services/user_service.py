@@ -1,4 +1,4 @@
-from typing import ClassVar, Type
+from typing import ClassVar
 from uuid import UUID
 
 from app.core.exceptions import NotFoundException, ConflictException
@@ -11,11 +11,11 @@ class UserService(Service):
     """
     Service class for user-related operations.
     """
-    user_repository: ClassVar[Type[IUserService]]
+    user_repository: ClassVar[type[IUserService]]
 
     def __new__(
         cls,
-        user_repository:Type[IUserService],
+        user_repository: type[IUserService],
     ):
         # Assign the user repository implementation to the class.
         cls.user_repository = user_repository
@@ -51,7 +51,7 @@ class UserService(Service):
         """
 
         # Ensure the user exists before attempting to update
-        await cls.get_specific_user(user_id)
+        _ = await cls.get_specific_user(user_id)
 
         # Perform the update in the repository
         update_user = await cls.user_repository.patch_user(user_id, user_data)
@@ -70,6 +70,6 @@ class UserService(Service):
         """
 
         # Ensure the user exists
-        await cls.get_specific_user(user_id)
+        _ = await cls.get_specific_user(user_id)
 
         await cls.user_repository.delete_user(user_id)
