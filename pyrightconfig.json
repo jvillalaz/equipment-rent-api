@@ -3,5 +3,6 @@
   "venv": ".venv",
   "reportUnknownMemberType": "none",
   "reportUnknownVariableType": "none",
-  "reportUnknownArgumentType": "none"
+  "reportUnknownArgumentType": "none",
+  "reportIncompatibleVariableOverride": "none"
 }

@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from tortoise import fields
 from tortoise.models import Model
@@ -30,9 +31,8 @@ class Equipment(Model):
     last_heartbeat = fields.DatetimeField(null=False, default=naive_utcnow)
     created_at = fields.DatetimeField(null=False, default=naive_utcnow)
 
-    # This field is not part of the actual model definition.
-    # It's only added to help the IDE recognize the FK ID attribute.
-    current_status_id: uuid.UUID | None
+    if TYPE_CHECKING:
+        current_status_id: uuid.UUID | None
 
     class Meta:
         table = "Equipments"

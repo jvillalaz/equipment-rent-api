@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from tortoise import fields, models
 import uuid
@@ -27,9 +28,8 @@ class UserAuth(models.Model):
     )
     created_at = fields.DatetimeField(null=False, default=naive_utcnow)
 
-    # This field is not part of the actual model definition.
-    # It's only added to help the IDE recognize the FK ID attribute.
-    user_id: uuid.UUID
+    if TYPE_CHECKING:
+        user_id: uuid.UUID
 
     class Meta:
         table = "UserAuth"
