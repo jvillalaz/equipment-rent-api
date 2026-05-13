@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, model_serializer
+from pydantic import BaseModel, ConfigDict, model_serializer, model_validator
 from pydantic.alias_generators import to_camel
 
 
@@ -24,6 +24,14 @@ class DTO(BaseModel):
         arbitrary_types_allowed=True,
         alias_generator=to_camel_without_underscore,
     )
+
+    @model_validator(mode="after")
+    def _normalize_datetimes(self) -> "DTO":
+        for field_name in self.model_fields:
+            value = getattr(self, field_name)
+            if isinstance(value, datetime) and value.tzinfo is not None:
+                object.__setattr__(self, field_name, value.replace(tzinfo=None))
+        return self
 
     @model_serializer(mode="wrap")
     def _serialize(self, handler: Any) -> dict[str, Any]:
