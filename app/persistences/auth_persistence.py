@@ -21,7 +21,7 @@ class AuthPersistence(IAuthService):
         """
         Hashes a plaintext password.
         """
-        return pwd_context.hash(password)
+        return pwd_context.hash(password)  # type: ignore[reportReturnType]
 
     @override
     @classmethod
@@ -71,7 +71,7 @@ class AuthPersistence(IAuthService):
         """
         user_auth = await UserAuth.get_or_none(username=credentials.username).prefetch_related("user")
 
-        if not user_auth or not pwd_context.verify(credentials.password, user_auth.password_hash):
+        if not user_auth or not pwd_context.verify(credentials.password, user_auth.password_hash):  # type: ignore[reportArgumentType]
             return None
 
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -80,7 +80,7 @@ class AuthPersistence(IAuthService):
             "sub": user_auth.username,
             "exp": expire
         }
-        access_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+        access_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)  # type: ignore[reportAssignmentType]
         return access_token
 
     @override

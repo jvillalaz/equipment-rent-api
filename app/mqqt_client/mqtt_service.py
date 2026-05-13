@@ -18,7 +18,7 @@ mqtt.on_connect = on_connect
 
 def publish_command(equipment_id: UUID, command: dict):
     topic = f"equipments/{equipment_id}/commands"
-    mqtt.publish(topic, json.dumps(command))
+    mqtt.publish(topic, json.dumps(command))  # type: ignore[reportAttributeAccessIssue]
     print(f"[MQTT] Command published for {topic}: {command}")
 
 
@@ -87,13 +87,13 @@ async def simulate_command_behavior(equipment_id: UUID, command_type: CommandTyp
 def publish_status(equipment_id: UUID, status: EquipmentStatusEnum):
     topic = f"equipments/{equipment_id}/status"
     payload = json.dumps({"status": status.value})
-    mqtt.publish(topic, payload)
+    mqtt.publish(topic, payload)  # type: ignore[reportAttributeAccessIssue]
 
 
 def publish_feedback(equipment_id: UUID, message: str):
     topic = f"equipments/{equipment_id}/feedback"
     payload = json.dumps({"message": message})
-    mqtt.publish(topic, payload)
+    mqtt.publish(topic, payload)  # type: ignore[reportAttributeAccessIssue]
 
 
 async def handle_status_message(topic: str, payload: bytes):
