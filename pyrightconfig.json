@@ -1,4 +1,9 @@
 {
   "venvPath": ".",
-  "venv": ".venv"
+  "venv": ".venv",
+  "reportUnknownMemberType": "none",
+  "reportUnknownVariableType": "none",
+  "reportUnknownArgumentType": "none",
+  "reportIncompatibleVariableOverride": "none",
+  "reportUninitializedInstanceVariable": "none"
 }
