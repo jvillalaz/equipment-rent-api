@@ -1,3 +1,4 @@
+from typing import Any, cast
 from typing_extensions import override
 from datetime import timedelta, datetime, timezone
 
@@ -92,8 +93,8 @@ class AuthPersistence(IAuthService):
         Extracts the user from the JWT token and ensures they are active.
         """
         try:
-            payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-            username: str = payload.get("sub")
+            payload = cast(dict[str, Any], decode(token, SECRET_KEY, algorithms=[ALGORITHM]))
+            username: str | None = payload.get("sub")
             if username is None:
                 return None
         except (ExpiredSignatureError, InvalidTokenError):

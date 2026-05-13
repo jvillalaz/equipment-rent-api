@@ -33,7 +33,7 @@ class DTO(BaseModel):
             for k, v in data.items()
         }
 
-    def model_dump(self, exclude_empty: bool = False, **kwargs) -> dict[str, Any]:
+    def model_dump(self, exclude_empty: bool = False, **kwargs: Any) -> dict[str, Any]:
         data = super().model_dump(**kwargs)
         if exclude_empty:
             return exclude_empty_collections(data)
