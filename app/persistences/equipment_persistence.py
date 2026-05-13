@@ -165,22 +165,29 @@ class EquipmentPersistence(IEquipmentService):
         if not equipment:
             return None
 
+        fields_to_update: list[str] = []
+
         if equipment_data.name and equipment_data.name != equipment.name:
             existing = await Equipment.get_or_none(name=equipment_data.name)
             if existing and existing.id != equipment.id:
                 return None
             equipment.name = equipment_data.name
+            fields_to_update.append("name")
 
         if equipment_data.current_status_id is not None:
             equipment.current_status_id = equipment_data.current_status_id
+            fields_to_update.append("current_status_id")
 
         if equipment_data.location is not None:
             equipment.location = equipment_data.location
+            fields_to_update.append("location")
 
         if equipment_data.last_heartbeat is not None:
             equipment.last_heartbeat = equipment_data.last_heartbeat
+            fields_to_update.append("last_heartbeat")
 
-        await equipment.save()
+        if fields_to_update:
+            await equipment.save(update_fields=fields_to_update)
         await equipment.fetch_related("current_status")
 
         return EquipmentResponseSchema(
