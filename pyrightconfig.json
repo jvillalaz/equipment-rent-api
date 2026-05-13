@@ -4,5 +4,6 @@
   "reportUnknownMemberType": "none",
   "reportUnknownVariableType": "none",
   "reportUnknownArgumentType": "none",
-  "reportIncompatibleVariableOverride": "none"
+  "reportIncompatibleVariableOverride": "none",
+  "reportUninitializedInstanceVariable": "none"
 }
