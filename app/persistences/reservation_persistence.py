@@ -69,6 +69,10 @@ class ReservationPersistence(IReservationService):
             status_name=reservation.status.name,
             created_at=reservation.created_at,
         )
+    
+    @classmethod
+    async def get_specific_reservation_by_equipment(cls, equipment_id: UUID) -> bool:
+        return await Reservation.filter(equipment_id=equipment_id).exists()
 
     @override
     @classmethod
@@ -154,6 +158,7 @@ class ReservationPersistence(IReservationService):
         )
 
         return reservation_response
+    
 
     @override
     @classmethod

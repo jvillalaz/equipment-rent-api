@@ -33,3 +33,11 @@ async def get_locations() -> list[LocationResponseSchema]:
 )
 async def get_specific_location(location_id: UUID) -> LocationResponseSchema | None:
   return await LocationService.get_location_by_id(location_id)
+
+@location_router.delete(
+  "/{location_id}",
+  response_model=None,
+  status_code=status.HTTP_204_NO_CONTENT
+)
+async def delete_specific_location(location_id: UUID) -> LocationResponseSchema | None:
+  return await LocationService.delete_location_by_id(location_id)

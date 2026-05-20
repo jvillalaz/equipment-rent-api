@@ -47,6 +47,15 @@ class IReservationService(ABC):
         Retrieves a specific reservation by its ID.
         """
         raise NotImplementedError()
+    
+    @classmethod
+    @abstractmethod
+    async def get_specific_reservation_by_equipment(
+            cls,
+            equipment_id: UUID,
+    ) -> bool:
+         raise NotImplementedError()
+    
 
     @classmethod
     @abstractmethod

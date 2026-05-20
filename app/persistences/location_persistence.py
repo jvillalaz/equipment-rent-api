@@ -26,7 +26,7 @@ class LocationPersistence(ILocationService):
     ) for loc in location]
   
   @classmethod
-  async def get_location_by_id(cls, location_id: UUID) -> LocationResponseSchema | None:
+  async def get_location_by_id(cls, location_id: UUID | None) -> LocationResponseSchema | None:
 
     location: Location | None = await Location.get_or_none(id=location_id)
 
@@ -38,6 +38,12 @@ class LocationPersistence(ILocationService):
         name=location.name,
         created_at=location.created_at
     )
+  
+  @classmethod
+  async def delete_location_by_id(cls, location_id: UUID) -> LocationResponseSchema | None:
+
+   await Location.filter(id=location_id).delete()
+
   
   @classmethod
   async def get_location_by_name(cls, name: str) -> LocationResponseSchema | None:

@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID, uuid4
 from zoneinfo import ZoneInfo
 
-from app.core.exceptions import ConflictException
+from app.core.exceptions import ConflictException, NotFoundException
 from app.database import location
 from app.interfaces.location_interface import ILocationService
 from app.schemas.location_schema import LocationCreateRequestSchema, LocationResponseSchema
@@ -44,6 +44,16 @@ class LocationService:
     location_exists: LocationResponseSchema | None = await cls.location_repository.get_location_by_id(location_id)
 
     if not location_exists:
-      return None
+      raise NotFoundException(detail=f"Location {location_id} not found")
 
     return location_exists
+  
+  @classmethod
+  async def delete_location_by_id(cls, location_id: UUID) -> LocationResponseSchema | None:
+
+    location_exists: LocationResponseSchema | None = await cls.location_repository.get_location_by_id(location_id)
+
+    if not location_exists:
+      raise NotFoundException(detail=f"Location {location_id} not found")
+
+    return await cls.location_repository.delete_location_by_id(location_id)

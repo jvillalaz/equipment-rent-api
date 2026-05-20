@@ -15,7 +15,7 @@ from app.services.user_service import UserService
 def inject_dependencies():
     AuthService(AuthPersistence)
     UserService(UserPersistence)
-    EquipmentService(EquipmentPersistence, LocationPersistence)
+    EquipmentService(EquipmentPersistence, LocationPersistence, ReservationPersistence)
     ReservationService(ReservationPersistence, EquipmentPersistence, UserPersistence)
     CommandService(CommandPersistence, EquipmentService)
     LocationService(LocationPersistence)

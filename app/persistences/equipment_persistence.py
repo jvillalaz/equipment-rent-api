@@ -82,6 +82,8 @@ class EquipmentPersistence(IEquipmentService):
         )
 
         return equipment_response
+    
+    
 
     @override
     @classmethod
@@ -114,7 +116,7 @@ class EquipmentPersistence(IEquipmentService):
         """
         Retrieves equipment by its name.
         """
-        equipment = await Equipment.get_or_none(name=equipment_name).select_related('current_status')
+        equipment = await Equipment.get_or_none(name=equipment_name).select_related('current_status', 'location')
 
         if not equipment:
             return None
@@ -123,7 +125,11 @@ class EquipmentPersistence(IEquipmentService):
             id=equipment.id,
             name=equipment.name,
             current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
-            location=equipment.location,
+            location=LocationResponseSchema(
+                id=equipment.location.id,
+                name=equipment.location.name,
+                created_at=equipment.location.created_at
+            ) if equipment.location else None,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
         )

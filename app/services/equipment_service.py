@@ -4,12 +4,12 @@ from uuid import UUID
 from app.core.exceptions import NotFoundException, ConflictException
 from app.interfaces.equipment_interface import IEquipmentService
 from app.interfaces.location_interface import ILocationService
+from app.interfaces.reservation_interface import IReservationService
 from app.schemas.equipment_schemas import EquipmentResponseSchema, \
     EquipmentRequestSchema, EquipmentStatusResponseSchema, EquipmentUpdateSchema
 from app.schemas.equipment_status_log_schemas import EquipmentStatusLogResponseSchema
 from app.schemas.location_schema import LocationResponseSchema
 from tools.application import Service
-
 
 class EquipmentService(Service):
     """
@@ -17,15 +17,18 @@ class EquipmentService(Service):
     """
     equipment_repository: ClassVar[type[IEquipmentService]]
     location_repository: type[ILocationService]
+    reservation_repository: type[IReservationService]
 
     def __new__(
         cls,
         equipment_repository: type[IEquipmentService],
         location_repository: type[ILocationService],
+        reservation_repository: type[IReservationService]
     ):
         # Assign the equipment repository implementation to the class.
         cls.equipment_repository = equipment_repository
         cls.location_repository = location_repository
+        cls.reservation_repository = reservation_repository
         return cls
 
     @classmethod
@@ -91,8 +94,13 @@ class EquipmentService(Service):
         """
         Creates a new equipment.
         """
+
         _ = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
-        await cls.get_equipment_by_name(equipment_data.name)
+
+        equipment_exists = await cls.get_equipment_by_name(equipment_data.name)
+        print(equipment_exists)
+        if equipment_exists:
+            raise ConflictException(detail=f"Equipment '{equipment_data.name}' already exists")
 
         location_exists: LocationResponseSchema | None = await cls.location_repository.get_location_by_id(equipment_data.location)
 
@@ -137,6 +145,12 @@ class EquipmentService(Service):
         Deletes specific equipment by its ID.
         """
         _ = await cls.get_specific_equipment(equipment_id)
+
+        equipment_reservation_exists = await cls.reservation_repository.get_specific_reservation_by_equipment(equipment_id)
+
+        if equipment_reservation_exists:
+            raise ConflictException(detail=f"Cannot delete equipment {equipment_id} because it is reserved")
+
         return await cls.equipment_repository.delete_equipment(equipment_id)
 
     @classmethod

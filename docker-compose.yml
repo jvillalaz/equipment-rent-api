@@ -17,7 +17,7 @@ services:
     environment:
       - MQTT_BROKER_HOST=rent-mosquitto
       - MQTT_BROKER_PORT=1883
-      - DATABASE_URL=postgres://rentdb:rentdb@rent-postgres:5432/rent
+      - DATABASE_URL=postgres://rentdb:rentdb@rent-postgres:5434/rent
       - SECRET_KEY=ffc2c1bf196a3a3ebbfcf731f4b03fe57239c2e81be50bd23a36e472ef3913b2
 
   rent-postgres:
@@ -31,7 +31,7 @@ services:
       - rentdb-data:/var/lib/postgresql/data
       # - ./create-tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql
     ports:
-      - "5432:5432"
+      - "5434:5432"
     networks:
       - rent-network
     healthcheck:
