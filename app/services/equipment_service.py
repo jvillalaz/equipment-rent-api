@@ -116,6 +116,11 @@ class EquipmentService(Service):
         if equipment_data.current_status_id is not None:
             _ = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
 
+        location_exists =  await cls.location_repository.get_location_by_id(equipment_data.location)
+
+        if not location_exists:
+            raise NotFoundException(detail=f"Location {equipment_data.location} not found")
+
         equipment_response = await cls.equipment_repository.patch_equipment(equipment_id, equipment_data)
 
         if not equipment_response:

@@ -184,7 +184,8 @@ class EquipmentPersistence(IEquipmentService):
             fields_to_update.append("current_status_id")
 
         if equipment_data.location is not None:
-            equipment.location = equipment_data.location
+            location = await Location.get_or_none(id=equipment_data.location)
+            equipment.location = location
             fields_to_update.append("location")
 
         if equipment_data.last_heartbeat is not None:
@@ -199,7 +200,7 @@ class EquipmentPersistence(IEquipmentService):
             id=equipment.id,
             name=equipment.name,
             current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
-            location=None,
+            location=LocationResponseSchema(id=equipment.location.id, name=equipment.location.name, created_at=equipment.location.created_at) if equipment.location else None,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
         )

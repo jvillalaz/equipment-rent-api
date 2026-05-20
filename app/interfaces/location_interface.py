@@ -13,7 +13,7 @@ class ILocationService(ABC):
   
   @classmethod
   @abstractmethod
-  async def get_location_by_id(cls, location_id: UUID) -> LocationResponseSchema | None:
+  async def get_location_by_id(cls, location_id: UUID | None) -> LocationResponseSchema | None:
     raise NotImplementedError
   
   @classmethod

@@ -40,7 +40,7 @@ class LocationService:
     return await cls.location_repository.get_locations()
   
   @classmethod
-  async def get_location_by_id(cls, location_id: UUID) -> LocationResponseSchema | None:
+  async def get_location_by_id(cls, location_id: UUID | None) -> LocationResponseSchema | None:
     location_exists: LocationResponseSchema | None = await cls.location_repository.get_location_by_id(location_id)
 
     if not location_exists:
