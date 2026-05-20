@@ -111,3 +111,8 @@ class IEquipmentService(ABC):
         Retrieves a list of specific equipment status logs from the database.
         """
         raise NotImplementedError
+
+    @classmethod
+    @abstractmethod
+    async def get_equipment_availability(cls, equipment_id: UUID) -> bool:
+        raise NotImplementedError

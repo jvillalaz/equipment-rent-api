@@ -3,9 +3,11 @@ from uuid import UUID
 
 from app.core.exceptions import NotFoundException, ConflictException
 from app.interfaces.equipment_interface import IEquipmentService
+from app.interfaces.location_interface import ILocationService
 from app.schemas.equipment_schemas import EquipmentResponseSchema, \
     EquipmentRequestSchema, EquipmentStatusResponseSchema, EquipmentUpdateSchema
 from app.schemas.equipment_status_log_schemas import EquipmentStatusLogResponseSchema
+from app.schemas.location_schema import LocationResponseSchema
 from tools.application import Service
 
 
@@ -14,13 +16,16 @@ class EquipmentService(Service):
     Service class responsible for equipment-related operations.
     """
     equipment_repository: ClassVar[type[IEquipmentService]]
+    location_repository: type[ILocationService]
 
     def __new__(
         cls,
         equipment_repository: type[IEquipmentService],
+        location_repository: type[ILocationService],
     ):
         # Assign the equipment repository implementation to the class.
         cls.equipment_repository = equipment_repository
+        cls.location_repository = location_repository
         return cls
 
     @classmethod
@@ -88,6 +93,11 @@ class EquipmentService(Service):
         """
         _ = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
         await cls.get_equipment_by_name(equipment_data.name)
+
+        location_exists: LocationResponseSchema | None = await cls.location_repository.get_location_by_id(equipment_data.location)
+
+        if not location_exists:
+            raise NotFoundException(detail=f"Location {equipment_data.location} not found")
 
         equipment = await cls.equipment_repository.post_equipment(equipment_data)
         return equipment

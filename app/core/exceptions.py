@@ -39,3 +39,7 @@ class InvalidIdException(BaseHTTPException):
 class UnauthorizedException(BaseHTTPException):
     def __init__(self, detail: str = "Authentication credentials were missing or invalid"):
         super().__init__(status_code=401, detail=detail)
+
+class UnprocessableEntityException(BaseHTTPException):
+    def __init__(self, detail: str = "Unprocessable entity"):
+        super().__init__(status_code=422, detail=detail)

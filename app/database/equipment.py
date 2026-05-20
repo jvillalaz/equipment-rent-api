@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import TYPE_CHECKING
 
 from tortoise import fields
@@ -27,7 +26,7 @@ class Equipment(Model):
         related_name="equipments",
         null=True
     )
-    location = fields.UUIDField(null=True)
+    location = fields.OneToOneField("models.Location", related_name="equipment", on_delete=fields.SET_NULL, null=True)
     last_heartbeat = fields.DatetimeField(null=False, default=naive_utcnow)
     created_at = fields.DatetimeField(null=False, default=naive_utcnow)
 

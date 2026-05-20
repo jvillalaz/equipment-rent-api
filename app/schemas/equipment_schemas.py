@@ -1,6 +1,8 @@
 from datetime import datetime
 from enum import Enum
 from uuid import UUID
+from app.database.location import Location
+from app.schemas.location_schema import LocationResponseSchema
 from pydantic import Field
 
 from tools.application import DTO
@@ -36,7 +38,7 @@ class EquipmentRequestSchema(DTO):
     """
     name: str = Field(..., description="Name of the equipment")
     current_status_id: UUID = Field(..., description="ID of the current equipment status")
-    location: UUID | None = Field(None, description="Location identifier of the equipment")
+    location: UUID  = Field(..., description="Location identifier of the equipment")
     last_heartbeat: datetime | None = Field(None, description="Timestamp of the last received heartbeat")
 
 class EquipmentResponseSchema(DTO):
@@ -46,7 +48,7 @@ class EquipmentResponseSchema(DTO):
     id: UUID = Field(..., description="Unique identifier for the equipment")
     name: str = Field(..., description="Name of the equipment")
     current_status_name: EquipmentStatusEnum = Field(..., description="Name of the current equipment status")
-    location: UUID | None = Field(None, description="Location identifier of the equipment")
+    location: LocationResponseSchema | None = Field(None, description="Location identifier of the equipment")
     last_heartbeat: datetime | None = Field(None, description="Last known heartbeat from the equipment")
     created_at: datetime = Field(..., description="Timestamp of equipment creation")
 

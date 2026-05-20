@@ -36,7 +36,7 @@ async def connect_mqtt(retries=5, delay=2):
 
 # Initializes the Postgres database with retry logic
 async def init_db(app: FastAPI, retries=10, delay=3):
-    db_url = os.getenv("DATABASE_URL", "postgres://rentdb:rentdb@rent-postgres:5432/rent")
+    db_url = "postgres://rentdb:rentdb@rent-postgres:5432/rent"
     for attempt in range(retries):
         try:
             await Tortoise.init(

@@ -1,11 +1,13 @@
 from app.persistences.command_persistence import CommandPersistence
 from app.persistences.equipment_persistence import EquipmentPersistence
+from app.persistences.location_persistence import LocationPersistence
 from app.persistences.reservation_persistence import ReservationPersistence
 from app.persistences.user_persistence import UserPersistence
 from app.persistences.auth_persistence import AuthPersistence
 from app.services.auth_service import AuthService
 from app.services.command_service import CommandService
 from app.services.equipment_service import EquipmentService
+from app.services.location_service import LocationService
 from app.services.reservation_service import ReservationService
 from app.services.user_service import UserService
 
@@ -13,6 +15,7 @@ from app.services.user_service import UserService
 def inject_dependencies():
     AuthService(AuthPersistence)
     UserService(UserPersistence)
-    EquipmentService(EquipmentPersistence)
+    EquipmentService(EquipmentPersistence, LocationPersistence)
     ReservationService(ReservationPersistence, EquipmentPersistence, UserPersistence)
     CommandService(CommandPersistence, EquipmentService)
+    LocationService(LocationPersistence)

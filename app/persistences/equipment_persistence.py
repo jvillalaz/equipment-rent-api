@@ -2,13 +2,15 @@ from typing_extensions import override
 from uuid import UUID
 
 from app.database import Equipment, EquipmentStatusLog
+from app.database.location import Location
 from app.interfaces.equipment_interface import IEquipmentService
 
 from app.database import EquipmentStatus
 from app.schemas.equipment_schemas import EquipmentResponseSchema, EquipmentStatusResponseSchema, \
     EquipmentRequestSchema, EquipmentUpdateSchema, EquipmentStatusEnum
 from app.schemas.equipment_status_log_schemas import EquipmentStatusLogResponseSchema
-
+from app.schemas.location_schema import LocationResponseSchema
+from tortoise.queryset import Q
 
 class EquipmentPersistence(IEquipmentService):
     """
@@ -39,7 +41,7 @@ class EquipmentPersistence(IEquipmentService):
         """
         Returns a list of all registered equipments
         """
-        equipments_record = await Equipment.all().select_related('current_status')
+        equipments_record = await Equipment.all().select_related('current_status', 'location')
         equipments_list: list[EquipmentResponseSchema] = []
 
         for equipment in equipments_record:
@@ -47,7 +49,7 @@ class EquipmentPersistence(IEquipmentService):
                 id=equipment.id,
                 name=equipment.name,
                 current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
-                location=equipment.location,
+                location= LocationResponseSchema(id=equipment.location.id, name=equipment.location.name, created_at=equipment.location.created_at) if equipment.location else None,
                 last_heartbeat=equipment.last_heartbeat,
                 created_at=equipment.created_at
             )
@@ -65,7 +67,7 @@ class EquipmentPersistence(IEquipmentService):
         """
         Retrieves specific equipment by its ID.
         """
-        equipment = await Equipment.get_or_none(id=equipment_id).select_related('current_status')
+        equipment = await Equipment.get_or_none(id=equipment_id).select_related('current_status', 'location')
 
         if not equipment:
             return None
@@ -74,7 +76,7 @@ class EquipmentPersistence(IEquipmentService):
             id=equipment.id,
             name=equipment.name,
             current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
-            location=equipment.location,
+            location=LocationResponseSchema(id=equipment.location.id, name=equipment.location.name, created_at=equipment.location.created_at) if equipment.location else None,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
         )
@@ -135,10 +137,13 @@ class EquipmentPersistence(IEquipmentService):
         """
         Creates a new equipment.
         """
+
+        location: Location | None = await Location.get_or_none(id=equipment_data.location)
+
         equipment = await Equipment.create(
             name=equipment_data.name,
             current_status_id=equipment_data.current_status_id,
-            location=equipment_data.location,
+            location=location,
         )
 
         await equipment.fetch_related("current_status")
@@ -147,7 +152,7 @@ class EquipmentPersistence(IEquipmentService):
             id=equipment.id,
             name=equipment.name,
             current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
-            location=equipment.location,
+            location=LocationResponseSchema(id=equipment.location.id, name=equipment.location.name, created_at=equipment.location.created_at) if equipment.location else None,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
         )
@@ -194,7 +199,7 @@ class EquipmentPersistence(IEquipmentService):
             id=equipment.id,
             name=equipment.name,
             current_status_name=equipment.current_status.name if equipment.current_status else EquipmentStatusEnum.OFFLINE,
-            location=equipment.location,
+            location=None,
             last_heartbeat=equipment.last_heartbeat,
             created_at=equipment.created_at
         )
@@ -242,6 +247,18 @@ class EquipmentPersistence(IEquipmentService):
             result_list.append(mapped_log)
 
         return result_list
+    
+    @classmethod
+    async def get_equipment_availability(cls, equipment_id: UUID) -> bool:
+
+        status_filter = Q(current_status__name=EquipmentStatusEnum.AVAILABLE)
+        equipment_filter = Q(id=equipment_id)
+
+        return ( await Equipment
+            .filter(status_filter & equipment_filter)
+            .select_related("current_status")
+            .exists()
+        )
 
     @override
     @classmethod
@@ -261,3 +278,4 @@ class EquipmentPersistence(IEquipmentService):
         Retrieves a list of specific equipment status logs from the database.
         """
         return await cls._fetch_and_map_status_logs(equipment_id=equipment_id)
+

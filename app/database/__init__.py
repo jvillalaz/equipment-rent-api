@@ -7,6 +7,7 @@ from .reservation import Reservation
 from .reservation_status import ReservationStatus
 from .user_auth import UserAuth
 from .user import User
+from .location import Location
 
 __all__ = [
     "Command",
@@ -18,4 +19,5 @@ __all__ = [
     "ReservationStatus",
     "UserAuth",
     "User",
+    "Location",
 ]

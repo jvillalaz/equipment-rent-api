@@ -29,7 +29,7 @@ services:
       POSTGRES_DB: "rent"
     volumes:
       - rentdb-data:/var/lib/postgresql/data
-      - ./create-tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql
+      # - ./create-tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql
     ports:
       - "5432:5432"
     networks:

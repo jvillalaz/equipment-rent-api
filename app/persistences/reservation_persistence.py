@@ -1,11 +1,13 @@
+from datetime import datetime
+
 from typing_extensions import override
 from uuid import UUID
 
 from app.interfaces.reservation_interface import IReservationService
 from app.database import ReservationStatus, Reservation
-from app.schemas.reservation_schemas import ReservationResponseSchema, ReservationUpdateSchema, \
+from app.schemas.reservation_schemas import ReservationResponseSchema, ReservationStatusEnum, ReservationUpdateSchema, \
     ReservationRequestSchema, ReservationStatusResponseSchema
-
+from tortoise.queryset import Q
 
 class ReservationPersistence(IReservationService):
     """
@@ -51,6 +53,8 @@ class ReservationPersistence(IReservationService):
             user_id=reservation_data.user_id,
             equipment_id=reservation_data.equipment_id,
             status_id=reservation_status.id,
+            start_time=reservation_data.start_time,
+            end_time=reservation_data.end_time
         )
 
         await reservation.fetch_related("user", "equipment", "status")
@@ -113,6 +117,21 @@ class ReservationPersistence(IReservationService):
             status_name=reservation.status.name,
             created_at=reservation.created_at,
         )
+    
+    @classmethod
+    async def get_equipment_reservation_status(cls, equipment_id: UUID, started_time: datetime, ended_time: datetime) -> bool:
+        print(started_time)
+        print(ended_time)
+
+        status_filter = Q(status__name=ReservationStatusEnum.ACTIVE.value)
+        range_datetime = Q(start_time__range=(started_time, ended_time))
+        equipment_filter = Q(equipment_id=equipment_id)
+
+        return ( await Reservation
+            .filter(status_filter & equipment_filter & range_datetime)
+            .exists()
+        )
+        
 
     @override
     @classmethod

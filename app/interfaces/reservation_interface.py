@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 from uuid import UUID
 
 from app.schemas.reservation_schemas import ReservationStatusResponseSchema, ReservationRequestSchema, \
@@ -79,4 +80,9 @@ class IReservationService(ABC):
         """
         Cancels the specified reservation by setting its status to "Canceled".
         """
+        raise NotImplementedError()
+    
+    @classmethod
+    @abstractmethod
+    async def get_equipment_reservation_status(cls, equipment_id: UUID, started_time: datetime, ended_time: datetime) -> bool:
         raise NotImplementedError()

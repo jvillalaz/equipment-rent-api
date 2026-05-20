@@ -1,7 +1,7 @@
 from typing import ClassVar
 from uuid import UUID
 
-from app.core.exceptions import NotFoundException
+from app.core.exceptions import ConflictException, NotFoundException, UnprocessableEntityException
 from app.interfaces.equipment_interface import IEquipmentService
 from app.interfaces.reservation_interface import IReservationService
 from app.interfaces.user_interface import IUserService
@@ -44,6 +44,9 @@ class ReservationService(Service):
         """
         Creates a new reservation.
         """
+        if reservation_data.start_time >= reservation_data.end_time:
+            raise UnprocessableEntityException("Start time must be before end time.")
+        
         user_data = await cls.user_repository.get_specific_user(reservation_data.user_id)
 
         if not user_data:
@@ -53,6 +56,15 @@ class ReservationService(Service):
 
         if not equipment_data:
             raise NotFoundException(detail=f"Equipment with id '{reservation_data.equipment_id}' not found")
+
+        reservation_exists = await cls.reservation_repository.get_equipment_reservation_status(
+            reservation_data.equipment_id,
+            reservation_data.start_time,
+            reservation_data.end_time
+        )
+        
+        if reservation_exists:
+            raise ConflictException(detail=f"equipment with id '{reservation_data.equipment_id}' already reserved")
 
         return await cls.reservation_repository.post_reservation(reservation_data)
 
