@@ -59,5 +59,5 @@ class EquipmentUpdateSchema(DTO):
     """
     name: str | None = Field(..., description="Name of the equipment")
     current_status_id: UUID | None = Field(..., description="ID of the current equipment status")
-    location: UUID | None = Field(None, description="Location identifier of the equipment")
+    location_id: UUID | None = Field(None, description="Location identifier of the equipment")
     last_heartbeat: datetime | None = Field(None, description="Timestamp of the last received heartbeat")

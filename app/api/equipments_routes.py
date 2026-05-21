@@ -61,7 +61,7 @@ async def post_equipment(
     return await EquipmentService.post_equipment(equipment_data)
 
 
-@equipments_router.patch(
+@equipments_router.put(
     "/{equipmentId}",
     response_model=EquipmentResponseSchema,
     status_code=status.HTTP_200_OK,

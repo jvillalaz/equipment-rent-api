@@ -1,3 +1,4 @@
+from math import e
 from typing import ClassVar
 from uuid import UUID
 
@@ -98,7 +99,6 @@ class EquipmentService(Service):
         _ = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
 
         equipment_exists = await cls.get_equipment_by_name(equipment_data.name)
-        print(equipment_exists)
         if equipment_exists:
             raise ConflictException(detail=f"Equipment '{equipment_data.name}' already exists")
 
@@ -119,20 +119,31 @@ class EquipmentService(Service):
         """
         Updates equipment information.
         """
-        _ = await cls.get_specific_equipment(equipment_id)
+        equipment_exists = await cls.get_specific_equipment(equipment_id)
+
+        if not equipment_exists:
+            raise NotFoundException(detail=f"Requested equipment {equipment_id} not found")
 
         if equipment_data.current_status_id is not None:
-            _ = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
+            equipment_status_exists = await cls.get_equipment_status_by_id(equipment_data.current_status_id)
 
-        location_exists =  await cls.location_repository.get_location_by_id(equipment_data.location)
+            if not equipment_status_exists:
+                raise NotFoundException(detail=f"Equipment status {equipment_data.current_status_id} not found")
 
+        location_exists =  await cls.location_repository.get_location_by_id(equipment_data.location_id)
+        
         if not location_exists:
-            raise NotFoundException(detail=f"Location {equipment_data.location} not found")
+            raise NotFoundException(detail=f"Location {equipment_data.location_id} not found")
+        
+        if equipment_data.name is not None and equipment_data.name != equipment_exists.name:
+            equipment_name_exists =await cls.get_equipment_by_name(equipment_data.name)
+
+            if equipment_name_exists:
+                raise ConflictException(detail=f"Equipment '{equipment_data.name}' already exists")
 
         equipment_response = await cls.equipment_repository.patch_equipment(equipment_id, equipment_data)
-
         if not equipment_response:
-            raise ConflictException(detail=f"Equipment '{equipment_data.name}' already exists")
+            raise ConflictException(detail=f"Requested equipment {equipment_id} not found")
 
         return equipment_response
 
