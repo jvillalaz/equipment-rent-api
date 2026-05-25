@@ -16,7 +16,7 @@ services:
       - rent-network
     environment:
       - MQTT_BROKER_HOST=rent-mosquitto
-      - MQTT_BROKER_PORT=1883
+      - MQTT_BROKER_PORT=1884
       - DATABASE_URL=postgres://rentdb:rentdb@rent-postgres:5434/rent
       - SECRET_KEY=ffc2c1bf196a3a3ebbfcf731f4b03fe57239c2e81be50bd23a36e472ef3913b2
 
@@ -44,8 +44,8 @@ services:
     image: eclipse-mosquitto
     container_name: rent-mqtt5
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - "1884:1883"
+      - "9002:9001"
     volumes:
       - ./config:/mosquitto/config:rw
       - ./data:/mosquitto/data:rw

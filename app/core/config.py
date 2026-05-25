@@ -8,7 +8,7 @@ from gmqtt import Client as MQTTClient
 
 # MQTT Broker host and port (default values for local Docker setup)
 MQTT_BROKER_HOST = os.getenv("MQTT_BROKER_HOST", "rent-mosquitto")
-MQTT_BROKER_PORT = int(os.getenv("MQTT_BROKER_PORT", 1883))
+MQTT_BROKER_PORT = int(os.getenv("MQTT_BROKER_PORT", 1884))
 
 # MQTT client ID (must be unique per client connected to the broker)
 MQTT_CLIENT_ID = os.getenv("MQTT_CLIENT_ID", "equipment-rent-api")

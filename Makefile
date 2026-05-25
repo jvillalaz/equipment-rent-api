@@ -34,3 +34,15 @@ ps:
 
 shell:
 	$(DC) exec equipment-rent bash
+
+migrate-init:
+	$(DC) exec equipment-rent aerich init -t migrations.config.TORTOISE_ORM
+
+migrate-init-db:
+	$(DC) exec equipment-rent aerich init-db
+
+migrate:
+	$(DC) exec equipment-rent aerich migrate
+
+migrate-upgrade:
+	$(DC) exec equipment-rent aerich upgrade

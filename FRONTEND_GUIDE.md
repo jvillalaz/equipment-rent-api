@@ -23,11 +23,11 @@ This guide is aimed at frontend developers who consume this API. It covers how t
 
 Make sure you have the following installed before proceeding:
 
-| Tool | Why it's needed |
-|---|---|
-| [Docker](https://docs.docker.com/get-docker/) | Runs all services in containers |
-| [Docker Compose](https://docs.docker.com/compose/) | Orchestrates the multi-container setup |
-| `make` | Shorthand commands (comes with most Linux/macOS; on Windows use WSL) |
+| Tool                                               | Why it's needed                                                      |
+| -------------------------------------------------- | -------------------------------------------------------------------- |
+| [Docker](https://docs.docker.com/get-docker/)      | Runs all services in containers                                      |
+| [Docker Compose](https://docs.docker.com/compose/) | Orchestrates the multi-container setup                               |
+| `make`                                             | Shorthand commands (comes with most Linux/macOS; on Windows use WSL) |
 
 Check your versions:
 
@@ -68,7 +68,7 @@ Look for these two lines to confirm everything is ready:
 
 ```
 Database connected!
-[MQTT] Connected to rent-mosquitto:1883
+[MQTT] Connected to rent-mosquitto:1884
 ```
 
 ### 4. Access the interactive docs
@@ -116,19 +116,19 @@ The project runs three containers that work together. Understanding each one hel
 
 All commands are run from the project root.
 
-| Command | What it does |
-|---|---|
-| `make build` | Builds the Docker images without starting |
-| `make up` | Starts all containers in the background |
-| `make down` | Stops and removes all containers |
-| `make restart` | Restarts all containers |
+| Command            | What it does                                                      |
+| ------------------ | ----------------------------------------------------------------- |
+| `make build`       | Builds the Docker images without starting                         |
+| `make up`          | Starts all containers in the background                           |
+| `make down`        | Stops and removes all containers                                  |
+| `make restart`     | Restarts all containers                                           |
 | `make restart-api` | Restarts only the API container (useful after dependency changes) |
-| `make rebuild` | Full teardown + rebuild from scratch, no cache |
-| `make logs` | Streams logs from all containers |
-| `make logs-api` | Streams logs from the API only |
-| `make logs-db` | Streams logs from PostgreSQL only |
-| `make ps` | Shows the status of all containers |
-| `make shell` | Opens a bash shell inside the API container |
+| `make rebuild`     | Full teardown + rebuild from scratch, no cache                    |
+| `make logs`        | Streams logs from all containers                                  |
+| `make logs-api`    | Streams logs from the API only                                    |
+| `make logs-db`     | Streams logs from PostgreSQL only                                 |
+| `make ps`          | Shows the status of all containers                                |
+| `make shell`       | Opens a bash shell inside the API container                       |
 
 > Use `make rebuild` when you change `requirements.txt` or `Dockerfile`. For code-only changes, hot-reload handles it automatically.
 
@@ -203,13 +203,13 @@ Tokens expire after **30 minutes**. After expiry the API returns `401 Unauthoriz
 
 The API uses camelCase for every field in both requests and responses, regardless of how they are stored internally.
 
-| Internal name | Over the wire |
-|---|---|
-| `user_id` | `userId` |
-| `equipment_id` | `equipmentId` |
+| Internal name       | Over the wire     |
+| ------------------- | ----------------- |
+| `user_id`           | `userId`          |
+| `equipment_id`      | `equipmentId`     |
 | `current_status_id` | `currentStatusId` |
-| `start_time` | `startTime` |
-| `created_at` | `createdAt` |
+| `start_time`        | `startTime`       |
+| `created_at`        | `createdAt`       |
 
 If you send a field with snake_case it will be ignored and you will likely get a validation error.
 
@@ -245,59 +245,59 @@ The base URL is `http://localhost:8000`. All routes except `/auth/register` and 
 
 ### Auth
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/auth/register` | Register a new user |
-| `POST` | `/auth/login` | Login and receive a JWT token |
-| `GET` | `/auth/me` | Get the currently authenticated user |
+| Method | Path             | Description                          |
+| ------ | ---------------- | ------------------------------------ |
+| `POST` | `/auth/register` | Register a new user                  |
+| `POST` | `/auth/login`    | Login and receive a JWT token        |
+| `GET`  | `/auth/me`       | Get the currently authenticated user |
 
 ### Users
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/users` | List all users |
-| `GET` | `/users/{userId}` | Get a specific user by ID |
-| `PATCH` | `/users/{userId}` | Update user information |
-| `DELETE` | `/users/{userId}` | Delete a user |
+| Method   | Path              | Description               |
+| -------- | ----------------- | ------------------------- |
+| `GET`    | `/users`          | List all users            |
+| `GET`    | `/users/{userId}` | Get a specific user by ID |
+| `PATCH`  | `/users/{userId}` | Update user information   |
+| `DELETE` | `/users/{userId}` | Delete a user             |
 
 ### Equipments
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/equipments` | List all equipments |
-| `POST` | `/equipments` | Create a new equipment |
-| `GET` | `/equipments/{equipmentId}` | Get a specific equipment |
-| `PATCH` | `/equipments/{equipmentId}` | Update equipment data |
-| `DELETE` | `/equipments/{equipmentId}` | Delete an equipment |
-| `GET` | `/equipments/{equipmentId}/status` | Get current status of an equipment |
+| Method   | Path                               | Description                        |
+| -------- | ---------------------------------- | ---------------------------------- |
+| `GET`    | `/equipments`                      | List all equipments                |
+| `POST`   | `/equipments`                      | Create a new equipment             |
+| `GET`    | `/equipments/{equipmentId}`        | Get a specific equipment           |
+| `PATCH`  | `/equipments/{equipmentId}`        | Update equipment data              |
+| `DELETE` | `/equipments/{equipmentId}`        | Delete an equipment                |
+| `GET`    | `/equipments/{equipmentId}/status` | Get current status of an equipment |
 
 ### Reservations
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/reservations` | List all reservations |
-| `POST` | `/reservations` | Create a new reservation |
-| `GET` | `/reservations/{reservationId}` | Get a specific reservation |
-| `PATCH` | `/reservations/{reservationId}` | Update reservation status |
-| `DELETE` | `/reservations/{reservationId}` | Cancel a reservation |
-| `GET` | `/reservations/status-reservation` | List all possible reservation statuses |
+| Method   | Path                               | Description                            |
+| -------- | ---------------------------------- | -------------------------------------- |
+| `GET`    | `/reservations`                    | List all reservations                  |
+| `POST`   | `/reservations`                    | Create a new reservation               |
+| `GET`    | `/reservations/{reservationId}`    | Get a specific reservation             |
+| `PATCH`  | `/reservations/{reservationId}`    | Update reservation status              |
+| `DELETE` | `/reservations/{reservationId}`    | Cancel a reservation                   |
+| `GET`    | `/reservations/status-reservation` | List all possible reservation statuses |
 
 ### Commands
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/commands` | List all issued commands |
-| `POST` | `/commands` | Send a command to equipment (triggers MQTT) |
-| `GET` | `/commands/{commandId}` | Get a specific command |
-| `GET` | `/commands/available-types` | List all available command types |
+| Method | Path                        | Description                                 |
+| ------ | --------------------------- | ------------------------------------------- |
+| `GET`  | `/commands`                 | List all issued commands                    |
+| `POST` | `/commands`                 | Send a command to equipment (triggers MQTT) |
+| `GET`  | `/commands/{commandId}`     | Get a specific command                      |
+| `GET`  | `/commands/available-types` | List all available command types            |
 
 ### Equipment Status & Logs
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/equipment-status` | List all possible equipment statuses |
-| `GET` | `/equipment-status-logs` | List all status change logs |
-| `GET` | `/equipment-status-logs/{equipmentId}` | List status logs for a specific equipment |
+| Method | Path                                   | Description                               |
+| ------ | -------------------------------------- | ----------------------------------------- |
+| `GET`  | `/equipment-status`                    | List all possible equipment statuses      |
+| `GET`  | `/equipment-status-logs`               | List all status change logs               |
+| `GET`  | `/equipment-status-logs/{equipmentId}` | List status logs for a specific equipment |
 
 ---
 
@@ -311,15 +311,15 @@ The API returns standard HTTP status codes with a JSON body in the format:
 }
 ```
 
-| Status | Name | When it happens | What to do |
-|---|---|---|---|
-| `400` | Bad Request | Validation failed, duplicate entry, or invalid value | Check the `detail` field — it will name the exact problem |
-| `401` | Unauthorized | Missing token, expired token, or wrong credentials | Re-authenticate; send the `Authorization` header |
-| `403` | Forbidden | Authenticated but not allowed to perform this action | Check user permissions |
-| `404` | Not Found | The requested resource does not exist | Verify the ID you are using is correct |
-| `409` | Conflict | Trying to create something that already exists (e.g., duplicate username) | Change the conflicting value (username, equipment name, etc.) |
-| `422` | Unprocessable Entity | The request body has the wrong shape or missing required fields | Check that field names are camelCase and all required fields are present |
-| `500` | Internal Server Error | Something unexpected broke on the server side | Check `make logs-api` for the full stack trace |
+| Status | Name                  | When it happens                                                           | What to do                                                               |
+| ------ | --------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `400`  | Bad Request           | Validation failed, duplicate entry, or invalid value                      | Check the `detail` field — it will name the exact problem                |
+| `401`  | Unauthorized          | Missing token, expired token, or wrong credentials                        | Re-authenticate; send the `Authorization` header                         |
+| `403`  | Forbidden             | Authenticated but not allowed to perform this action                      | Check user permissions                                                   |
+| `404`  | Not Found             | The requested resource does not exist                                     | Verify the ID you are using is correct                                   |
+| `409`  | Conflict              | Trying to create something that already exists (e.g., duplicate username) | Change the conflicting value (username, equipment name, etc.)            |
+| `422`  | Unprocessable Entity  | The request body has the wrong shape or missing required fields           | Check that field names are camelCase and all required fields are present |
+| `500`  | Internal Server Error | Something unexpected broke on the server side                             | Check `make logs-api` for the full stack trace                           |
 
 ### Common mistakes that cause `422`
 
